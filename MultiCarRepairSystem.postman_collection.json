@@ -1,0 +1,1153 @@
+{
+	"info": {
+		"_postman_id": "multi-car-repair-system-api",
+		"name": "Multi Car Repair System API",
+		"description": "Complete API collection for Multi Car Repair System with all endpoints from 10 controllers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"companyName\": \"ABC Auto Repair\",\n  \"gstIn\": \"29ABCDE1234F1Z5\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/companies",
+							"host": ["{{api_base}}"],
+							"path": ["companies"]
+						}
+					}
+				},
+				{
+					"name": "Get Company by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/companies/{{companyId}}",
+							"host": ["{{api_base}}"],
+							"path": ["companies", "{{companyId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Companies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/companies",
+							"host": ["{{api_base}}"],
+							"path": ["companies"]
+						}
+					}
+				},
+				{
+					"name": "Update Company",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"companyName\": \"ABC Auto Repair Updated\",\n  \"gstIn\": \"29ABCDE1234F1Z5\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/companies/{{companyId}}",
+							"host": ["{{api_base}}"],
+							"path": ["companies", "{{companyId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/companies/{{companyId}}",
+							"host": ["{{api_base}}"],
+							"path": ["companies", "{{companyId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Company by GSTIN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/companies/gstin/29ABCDE1234F1Z5",
+							"host": ["{{api_base}}"],
+							"path": ["companies", "gstin", "29ABCDE1234F1Z5"]
+						}
+					}
+				},
+				{
+					"name": "Check GSTIN Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/companies/exists/gstin/29ABCDE1234F1Z5",
+							"host": ["{{api_base}}"],
+							"path": ["companies", "exists", "gstin", "29ABCDE1234F1Z5"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Create Inventory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"partCode\": \"ENG001\",\n  \"name\": \"Engine Oil 5W-30\",\n  \"barCode\": \"1234567890123\",\n  \"category\": \"OEM\",\n  \"hsnCode\": \"27101250\",\n  \"gstSlab\": \"EIGHTEEN_PERCENT\",\n  \"stockQty\": 100,\n  \"minStock\": 20,\n  \"priceTotalUnits\": 5000.00,\n  \"totalUnits\": 10,\n  \"unitsPrice\": 500.00,\n  \"companyId\": \"{{companyId}}\",\n  \"supplierId\": \"{{supplierId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/inventory",
+							"host": ["{{api_base}}"],
+							"path": ["inventory"]
+						}
+					}
+				},
+				{
+					"name": "Sell From Inventory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    {\n      \"requestedUnits\": 2,\n      \"partCode\": \"ENG001\",\n      \"jobId\": \"{{jobCardId}}\",\n      \"discountRate\": 5.0\n    }\n  ],\n  \"cgst\": 90.00,\n  \"sgst\": 90.00,\n  \"igst\": 0.00,\n  \"paymentMode\": \"UPI\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/inventory/sell",
+							"host": ["{{api_base}}"],
+							"path": ["inventory", "sell"]
+						}
+					}
+				},
+				{
+					"name": "Get Stock Alerts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/inventory/alerts?companyId={{companyId}}",
+							"host": ["{{api_base}}"],
+							"path": ["inventory", "alerts"],
+							"query": [
+								{
+									"key": "companyId",
+									"value": "{{companyId}}",
+									"disabled": false
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Inventory by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/inventory/{{inventoryId}}",
+							"host": ["{{api_base}}"],
+							"path": ["inventory", "{{inventoryId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Inventories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/inventory",
+							"host": ["{{api_base}}"],
+							"path": ["inventory"]
+						}
+					}
+				},
+				{
+					"name": "Update Inventory",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"partCode\": \"ENG001\",\n  \"name\": \"Engine Oil 5W-30 Updated\",\n  \"barCode\": \"1234567890123\",\n  \"category\": \"OEM\",\n  \"hsnCode\": \"27101250\",\n  \"gstSlab\": \"EIGHTEEN_PERCENT\",\n  \"stockQty\": 150,\n  \"minStock\": 25,\n  \"priceTotalUnits\": 6000.00,\n  \"totalUnits\": 12,\n  \"unitsPrice\": 500.00,\n  \"companyId\": \"{{companyId}}\",\n  \"supplierId\": \"{{supplierId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/inventory/{{inventoryId}}",
+							"host": ["{{api_base}}"],
+							"path": ["inventory", "{{inventoryId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Inventory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/inventory/{{inventoryId}}",
+							"host": ["{{api_base}}"],
+							"path": ["inventory", "{{inventoryId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Invoices",
+			"item": [
+				{
+					"name": "Create Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jobId\": \"{{jobCardId}}\",\n  \"subtotal\": 5000.00,\n  \"cgst\": 450.00,\n  \"sgst\": 450.00,\n  \"igst\": 0.00,\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMode\": \"UPI\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/invoices",
+							"host": ["{{api_base}}"],
+							"path": ["invoices"]
+						}
+					}
+				},
+				{
+					"name": "Get Invoice by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/invoices/{{invoiceId}}",
+							"host": ["{{api_base}}"],
+							"path": ["invoices", "{{invoiceId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Invoices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/invoices",
+							"host": ["{{api_base}}"],
+							"path": ["invoices"]
+						}
+					}
+				},
+				{
+					"name": "Update Invoice",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jobId\": \"{{jobCardId}}\",\n  \"subtotal\": 5500.00,\n  \"cgst\": 495.00,\n  \"sgst\": 495.00,\n  \"igst\": 0.00,\n  \"paymentStatus\": \"PENDING\",\n  \"paymentMode\": \"UPI\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/invoices/{{invoiceId}}",
+							"host": ["{{api_base}}"],
+							"path": ["invoices", "{{invoiceId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Invoice",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/invoices/{{invoiceId}}",
+							"host": ["{{api_base}}"],
+							"path": ["invoices", "{{invoiceId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Invoices by Job ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/invoices/job/{{jobCardId}}",
+							"host": ["{{api_base}}"],
+							"path": ["invoices", "job", "{{jobCardId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Invoices by Payment Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/invoices/status/PENDING",
+							"host": ["{{api_base}}"],
+							"path": ["invoices", "status", "PENDING"]
+						}
+					}
+				},
+				{
+					"name": "Update Payment Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/invoices/{{invoiceId}}/payment?paymentStatus=COMPLETED&paymentMode=UPI",
+							"host": ["{{api_base}}"],
+							"path": ["invoices", "{{invoiceId}}", "payment"],
+							"query": [
+								{
+									"key": "paymentStatus",
+									"value": "COMPLETED"
+								},
+								{
+									"key": "paymentMode",
+									"value": "UPI",
+									"disabled": false
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "Create Job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vehicleNumber\": \"KA01AB1234\",\n  \"kmReading\": 50000,\n  \"jobDate\": \"2024-01-15T10:00:00\",\n  \"status\": \"PENDING\",\n  \"checkinTime\": \"2024-01-15T10:00:00\",\n  \"estimatedDelivery\": \"2024-01-17T18:00:00\",\n  \"companyId\": \"{{companyId}}\",\n  \"jobDescription\": {\n    \"serviceType\": \"PERIODIC\",\n    \"description\": \"Regular service and oil change\",\n    \"assignedMechanicType\": \"Senior Mechanic\",\n    \"estimatedTime\": \"2 hours\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/jobs",
+							"host": ["{{api_base}}"],
+							"path": ["jobs"]
+						}
+					}
+				},
+				{
+					"name": "Get Job by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/jobs/{{jobCardId}}",
+							"host": ["{{api_base}}"],
+							"path": ["jobs", "{{jobCardId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/jobs",
+							"host": ["{{api_base}}"],
+							"path": ["jobs"]
+						}
+					}
+				},
+				{
+					"name": "Update Job",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vehicleNumber\": \"KA01AB1234\",\n  \"kmReading\": 50000,\n  \"jobDate\": \"2024-01-15T10:00:00\",\n  \"status\": \"IN_PROGRESS\",\n  \"checkinTime\": \"2024-01-15T10:00:00\",\n  \"estimatedDelivery\": \"2024-01-17T18:00:00\",\n  \"companyId\": \"{{companyId}}\",\n  \"jobDescription\": {\n    \"serviceType\": \"PERIODIC\",\n    \"description\": \"Regular service and oil change - Updated\",\n    \"assignedMechanicType\": \"Senior Mechanic\",\n    \"estimatedTime\": \"2.5 hours\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/jobs/{{jobCardId}}",
+							"host": ["{{api_base}}"],
+							"path": ["jobs", "{{jobCardId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Job",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/jobs/{{jobCardId}}",
+							"host": ["{{api_base}}"],
+							"path": ["jobs", "{{jobCardId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Permissions",
+			"item": [
+				{
+					"name": "Create Permission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"permissionName\": \"USER_MANAGEMENT\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/permissions",
+							"host": ["{{api_base}}"],
+							"path": ["permissions"]
+						}
+					}
+				},
+				{
+					"name": "Get Permission by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/permissions/{{permissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["permissions", "{{permissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Permissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/permissions",
+							"host": ["{{api_base}}"],
+							"path": ["permissions"]
+						}
+					}
+				},
+				{
+					"name": "Update Permission",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"permissionName\": \"USER_MANAGEMENT\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/permissions/{{permissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["permissions", "{{permissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Permission",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/permissions/{{permissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["permissions", "{{permissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Permission by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/permissions/name/USER_MANAGEMENT",
+							"host": ["{{api_base}}"],
+							"path": ["permissions", "name", "USER_MANAGEMENT"]
+						}
+					}
+				},
+				{
+					"name": "Check Permission Name Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/permissions/exists/name/USER_MANAGEMENT",
+							"host": ["{{api_base}}"],
+							"path": ["permissions", "exists", "name", "USER_MANAGEMENT"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Create Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"roleName\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/roles",
+							"host": ["{{api_base}}"],
+							"path": ["roles"]
+						}
+					}
+				},
+				{
+					"name": "Get Role by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/roles/{{roleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["roles", "{{roleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/roles",
+							"host": ["{{api_base}}"],
+							"path": ["roles"]
+						}
+					}
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"roleName\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/roles/{{roleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["roles", "{{roleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/roles/{{roleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["roles", "{{roleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Role by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/roles/name/ADMIN",
+							"host": ["{{api_base}}"],
+							"path": ["roles", "name", "ADMIN"]
+						}
+					}
+				},
+				{
+					"name": "Check Role Name Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/roles/exists/name/ADMIN",
+							"host": ["{{api_base}}"],
+							"path": ["roles", "exists", "name", "ADMIN"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Role Permissions",
+			"item": [
+				{
+					"name": "Create Role Permission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"roleId\": {\n    \"roleId\": \"{{roleId}}\"\n  },\n  \"permission\": {\n    \"permissionId\": \"{{permissionId}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/role-permissions",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions"]
+						}
+					}
+				},
+				{
+					"name": "Get Role Permission by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/role-permissions/{{rolePermissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions", "{{rolePermissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Role Permissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/role-permissions",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions"]
+						}
+					}
+				},
+				{
+					"name": "Update Role Permission",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"roleId\": {\n    \"roleId\": \"{{roleId}}\"\n  },\n  \"permission\": {\n    \"permissionId\": \"{{permissionId}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/role-permissions/{{rolePermissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions", "{{rolePermissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Role Permission",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/role-permissions/{{rolePermissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions", "{{rolePermissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Role Permissions by Role ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/role-permissions/role/{{roleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions", "role", "{{roleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Role Permissions by Permission ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/role-permissions/permission/{{permissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions", "permission", "{{permissionId}}"]
+						}
+					}
+				},
+				{
+					"name": "Check Role Permission Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/role-permissions/exists/role/{{roleId}}/permission/{{permissionId}}",
+							"host": ["{{api_base}}"],
+							"path": ["role-permissions", "exists", "role", "{{roleId}}", "permission", "{{permissionId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Suppliers",
+			"item": [
+				{
+					"name": "Create Supplier",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ABC Parts Supplier\",\n  \"mobile\": \"9876543210\",\n  \"gstin\": \"29ABCDE1234F1Z6\",\n  \"address\": \"123 Main Street, Bangalore, Karnataka 560001\",\n  \"companyId\": \"{{companyId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/suppliers",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers"]
+						}
+					}
+				},
+				{
+					"name": "Get Supplier by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/suppliers/{{supplierId}}",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers", "{{supplierId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Suppliers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/suppliers",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers"]
+						}
+					}
+				},
+				{
+					"name": "Update Supplier",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ABC Parts Supplier Updated\",\n  \"mobile\": \"9876543210\",\n  \"gstin\": \"29ABCDE1234F1Z6\",\n  \"address\": \"123 Main Street, Bangalore, Karnataka 560001\",\n  \"companyId\": \"{{companyId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/suppliers/{{supplierId}}",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers", "{{supplierId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Supplier",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/suppliers/{{supplierId}}",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers", "{{supplierId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Suppliers by Company ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/suppliers/company/{{companyId}}",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers", "company", "{{companyId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Supplier by GSTIN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/suppliers/gstin/29ABCDE1234F1Z6",
+							"host": ["{{api_base}}"],
+							"path": ["suppliers", "gstin", "29ABCDE1234F1Z6"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailId\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"companyId\": {\n    \"companyId\": \"{{companyId}}\"\n  },\n  \"userType\": \"COMPANY_USER\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/users",
+							"host": ["{{api_base}}"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users/{{userId}}",
+							"host": ["{{api_base}}"],
+							"path": ["users", "{{userId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users",
+							"host": ["{{api_base}}"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailId\": \"user@example.com\",\n  \"password\": \"newpassword123\",\n  \"companyId\": {\n    \"companyId\": \"{{companyId}}\"\n  },\n  \"userType\": \"COMPANY_USER\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/users/{{userId}}",
+							"host": ["{{api_base}}"],
+							"path": ["users", "{{userId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users/{{userId}}",
+							"host": ["{{api_base}}"],
+							"path": ["users", "{{userId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get User by Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users/email/user@example.com",
+							"host": ["{{api_base}}"],
+							"path": ["users", "email", "user@example.com"]
+						}
+					}
+				},
+				{
+					"name": "Get Users by Company ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users/company/{{companyId}}",
+							"host": ["{{api_base}}"],
+							"path": ["users", "company", "{{companyId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Users by User Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users/type/COMPANY_USER",
+							"host": ["{{api_base}}"],
+							"path": ["users", "type", "COMPANY_USER"]
+						}
+					}
+				},
+				{
+					"name": "Check Email Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/users/exists/email/user@example.com",
+							"host": ["{{api_base}}"],
+							"path": ["users", "exists", "email", "user@example.com"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User Roles",
+			"item": [
+				{
+					"name": "Create User Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {\n    \"userId\": \"{{userId}}\"\n  },\n  \"roleId\": {\n    \"roleId\": \"{{roleId}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/user-roles",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles"]
+						}
+					}
+				},
+				{
+					"name": "Get User Role by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/user-roles/{{userRoleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles", "{{userRoleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get All User Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/user-roles",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles"]
+						}
+					}
+				},
+				{
+					"name": "Update User Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {\n    \"userId\": \"{{userId}}\"\n  },\n  \"roleId\": {\n    \"roleId\": \"{{roleId}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/user-roles/{{userRoleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles", "{{userRoleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete User Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/user-roles/{{userRoleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles", "{{userRoleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get User Roles by User ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/user-roles/user/{{userId}}",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles", "user", "{{userId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get User Roles by Role ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/user-roles/role/{{roleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles", "role", "{{roleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Check User Role Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base}}/user-roles/exists/user/{{userId}}/role/{{roleId}}",
+							"host": ["{{api_base}}"],
+							"path": ["user-roles", "exists", "user", "{{userId}}", "role", "{{roleId}}"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "api_base",
+			"value": "{{base_url}}:{{port}}/api",
+			"type": "string"
+		}
+	]
+}
+
+
+
