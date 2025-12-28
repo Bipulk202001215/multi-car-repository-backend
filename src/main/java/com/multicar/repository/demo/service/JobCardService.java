@@ -40,6 +40,7 @@ public class JobCardService {
                 .jobDate(request.getJobDate())
                 .status(request.getStatus() != null ? request.getStatus() : JobStatus.PENDING)
                 .checkinTime(request.getCheckinTime())
+                .mobileNumber(request.getMobileNumber())
                 .estimatedDelivery(request.getEstimatedDelivery())
                 .companyId(request.getCompanyId())
                 .invoiceId(null) // invoice_id is not part of request, set to null initially
