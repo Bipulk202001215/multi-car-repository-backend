@@ -34,7 +34,7 @@ public class JobCardEntity {
     @Column(name = "vehicle_number", nullable = false)
     private String vehicleNumber;
 
-    @Column(name = "vehicle_number", nullable = false)
+    @Column(name = "mobile_number", nullable = false)
     private String mobileNumber;
     
     @Column(name = "km_reading")

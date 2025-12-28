@@ -117,6 +117,7 @@ public class JobCardService {
                 .estimatedDelivery(entity.getEstimatedDelivery())
                 .invoiceId(entity.getInvoiceId())
                 .createdOn(entity.getCreatedOn())
+                .mobileNumber(entity.getMobileNumber())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
     }

@@ -24,6 +24,7 @@ public class JobCard {
     private LocalDateTime checkinTime;
     private LocalDateTime estimatedDelivery;
     private String invoiceId;
+    private String mobileNumber;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }

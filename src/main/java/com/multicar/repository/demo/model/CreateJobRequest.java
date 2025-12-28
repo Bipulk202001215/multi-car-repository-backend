@@ -19,7 +19,6 @@ public class CreateJobRequest {
     private String vehicleNumber;
     private String mobileNumber;
     private Integer kmReading;
-    private String mobileNumber;
     private LocalDateTime jobDate;
     private JobStatus status;
     private LocalDateTime checkinTime;
