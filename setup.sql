@@ -26,3 +26,19 @@ INSERT INTO role_entity  (ROLEID, role_name, created_on, updated_on) VALUES
 ('ROLEID251227000004', 'MECHANIC', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('ROLEID251227000005', 'ACCOUNTANT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 ON CONFLICT (role_name) DO NOTHING;
+
+
+
+INSERT INTO public.role_permission_entity
+(rolepermissionid, created_on, updated_on, permission_id, role_id)
+VALUES('RPID251228145329', '2025-12-28 14:53:29.307', '2025-12-28 14:53:29.307', 'PERMID251227000005', 'ROLEID251227000001');
+INSERT INTO public.role_permission_entity
+(rolepermissionid, created_on, updated_on, permission_id, role_id)
+VALUES('RPID251228145350', '2025-12-28 14:53:50.688', '2025-12-28 14:53:50.688', 'PERMID251227000006', 'ROLEID251227000001');
+INSERT INTO public.role_permission_entity
+(rolepermissionid, created_on, updated_on, permission_id, role_id)
+VALUES('RPID251228145409', '2025-12-28 14:54:09.288', '2025-12-28 14:54:09.288', 'PERMID251227000007', 'ROLEID251227000001');
+INSERT INTO public.role_permission_entity
+(rolepermissionid, created_on, updated_on, permission_id, role_id)
+VALUES('RPID251228145421', '2025-12-28 14:54:21.249', '2025-12-28 14:54:21.249', 'PERMID251227000008', 'ROLEID251227000001');
+
