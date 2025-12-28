@@ -1,6 +1,8 @@
 package com.multicar.repository.demo.controller;
 
 import com.multicar.repository.demo.enums.UserType;
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.User;
 import com.multicar.repository.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +27,9 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId) {
-        return userService.getUserById(userId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId, ErrorCode.USER_NOT_FOUND));
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
@@ -40,25 +42,25 @@ public class UserController {
     public ResponseEntity<User> updateUser(
             @PathVariable String userId,
             @RequestBody User user) {
-        return userService.updateUser(userId, user)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        User updatedUser = userService.updateUser(userId, user)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId, ErrorCode.USER_NOT_FOUND));
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
         boolean deleted = userService.deleteUser(userId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("User not found with id: " + userId, ErrorCode.USER_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/email/{emailId}")
     public ResponseEntity<User> getUserByEmailId(@PathVariable String emailId) {
-        return userService.getUserByEmailId(emailId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        User user = userService.getUserByEmailId(emailId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + emailId, ErrorCode.USER_NOT_FOUND));
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/company/{companyId}")

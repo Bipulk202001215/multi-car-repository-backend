@@ -1,5 +1,7 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.CreateJobRequest;
 import com.multicar.repository.demo.model.JobCard;
 import com.multicar.repository.demo.service.JobCardService;
@@ -25,9 +27,9 @@ public class JobController {
 
     @GetMapping("/{jobCardId}")
     public ResponseEntity<JobCard> getJobCardById(@PathVariable String jobCardId) {
-        return jobCardService.getJobCardById(jobCardId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        JobCard jobCard = jobCardService.getJobCardById(jobCardId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job card not found with id: " + jobCardId, ErrorCode.JOB_NOT_FOUND));
+        return ResponseEntity.ok(jobCard);
     }
 
     @GetMapping
@@ -40,18 +42,18 @@ public class JobController {
     public ResponseEntity<JobCard> updateJobCard(
             @PathVariable String jobCardId,
             @RequestBody CreateJobRequest request) {
-        return jobCardService.updateJobCard(jobCardId, request)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        JobCard updatedJobCard = jobCardService.updateJobCard(jobCardId, request)
+                .orElseThrow(() -> new ResourceNotFoundException("Job card not found with id: " + jobCardId, ErrorCode.JOB_NOT_FOUND));
+        return ResponseEntity.ok(updatedJobCard);
     }
 
     @DeleteMapping("/{jobCardId}")
     public ResponseEntity<Void> deleteJobCard(@PathVariable String jobCardId) {
         boolean deleted = jobCardService.deleteJobCard(jobCardId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Job card not found with id: " + jobCardId, ErrorCode.JOB_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 }
 

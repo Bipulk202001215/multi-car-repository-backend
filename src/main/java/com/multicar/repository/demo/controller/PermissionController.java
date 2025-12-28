@@ -1,5 +1,7 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.Permission;
 import com.multicar.repository.demo.service.PermissionService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,9 @@ public class PermissionController {
 
     @GetMapping("/{permissionId}")
     public ResponseEntity<Permission> getPermissionById(@PathVariable String permissionId) {
-        return permissionService.getPermissionById(permissionId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Permission permission = permissionService.getPermissionById(permissionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Permission not found with id: " + permissionId, ErrorCode.PERMISSION_NOT_FOUND));
+        return ResponseEntity.ok(permission);
     }
 
     @GetMapping
@@ -39,25 +41,25 @@ public class PermissionController {
     public ResponseEntity<Permission> updatePermission(
             @PathVariable String permissionId,
             @RequestBody Permission permission) {
-        return permissionService.updatePermission(permissionId, permission)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Permission updatedPermission = permissionService.updatePermission(permissionId, permission)
+                .orElseThrow(() -> new ResourceNotFoundException("Permission not found with id: " + permissionId, ErrorCode.PERMISSION_NOT_FOUND));
+        return ResponseEntity.ok(updatedPermission);
     }
 
     @DeleteMapping("/{permissionId}")
     public ResponseEntity<Void> deletePermission(@PathVariable String permissionId) {
         boolean deleted = permissionService.deletePermission(permissionId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Permission not found with id: " + permissionId, ErrorCode.PERMISSION_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/name/{permissionName}")
     public ResponseEntity<Permission> getPermissionByName(@PathVariable com.multicar.repository.demo.enums.Permission permissionName) {
-        return permissionService.getPermissionByName(permissionName)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Permission permission = permissionService.getPermissionByName(permissionName)
+                .orElseThrow(() -> new ResourceNotFoundException("Permission not found with name: " + permissionName, ErrorCode.PERMISSION_NOT_FOUND));
+        return ResponseEntity.ok(permission);
     }
 
     @GetMapping("/exists/name/{permissionName}")

@@ -1,5 +1,7 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.UserRole;
 import com.multicar.repository.demo.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,9 @@ public class UserRoleController {
 
     @GetMapping("/{userRoleId}")
     public ResponseEntity<UserRole> getUserRoleById(@PathVariable String userRoleId) {
-        return userRoleService.getUserRoleById(userRoleId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        UserRole userRole = userRoleService.getUserRoleById(userRoleId)
+                .orElseThrow(() -> new ResourceNotFoundException("User role not found with id: " + userRoleId, ErrorCode.USER_ROLE_NOT_FOUND));
+        return ResponseEntity.ok(userRole);
     }
 
     @GetMapping
@@ -39,18 +41,18 @@ public class UserRoleController {
     public ResponseEntity<UserRole> updateUserRole(
             @PathVariable String userRoleId,
             @RequestBody UserRole userRole) {
-        return userRoleService.updateUserRole(userRoleId, userRole)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        UserRole updatedUserRole = userRoleService.updateUserRole(userRoleId, userRole)
+                .orElseThrow(() -> new ResourceNotFoundException("User role not found with id: " + userRoleId, ErrorCode.USER_ROLE_NOT_FOUND));
+        return ResponseEntity.ok(updatedUserRole);
     }
 
     @DeleteMapping("/{userRoleId}")
     public ResponseEntity<Void> deleteUserRole(@PathVariable String userRoleId) {
         boolean deleted = userRoleService.deleteUserRole(userRoleId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("User role not found with id: " + userRoleId, ErrorCode.USER_ROLE_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/user/{userId}")

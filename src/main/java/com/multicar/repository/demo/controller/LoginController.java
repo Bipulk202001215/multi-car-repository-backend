@@ -4,7 +4,6 @@ import com.multicar.repository.demo.model.LoginRequest;
 import com.multicar.repository.demo.model.LoginResponse;
 import com.multicar.repository.demo.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +19,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            LoginResponse loginResponse = authenticationService.authenticate(loginRequest);
-            return ResponseEntity.ok(loginResponse);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        LoginResponse loginResponse = authenticationService.authenticate(loginRequest);
+        return ResponseEntity.ok(loginResponse);
     }
 }
 

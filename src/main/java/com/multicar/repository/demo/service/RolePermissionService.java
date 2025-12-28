@@ -4,8 +4,10 @@ import com.multicar.repository.demo.entity.PermissionEntity;
 import com.multicar.repository.demo.entity.RoleEntity;
 import com.multicar.repository.demo.entity.RolePermissionEntity;
 import com.multicar.repository.demo.model.Permission;
+import com.multicar.repository.demo.model.PermissionInfo;
 import com.multicar.repository.demo.model.Role;
 import com.multicar.repository.demo.model.RolePermission;
+import com.multicar.repository.demo.model.RolePermissionsResponse;
 import com.multicar.repository.demo.repository.PermissionRepository;
 import com.multicar.repository.demo.repository.RolePermissionRepository;
 import com.multicar.repository.demo.repository.RoleRepository;
@@ -92,6 +94,26 @@ public class RolePermissionService {
 
     public boolean existsByRoleIdAndPermissionId(String roleId, String permissionId) {
         return rolePermissionRepository.existsByRoleId_RoleIdAndPermission_PermissionId(roleId, permissionId);
+    }
+
+    public RolePermissionsResponse getRolePermissionsResponseByRoleId(String roleId) {
+        // Validate role exists
+        roleRepository.findByRoleId(roleId)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found with id: " + roleId));
+        
+        List<RolePermission> rolePermissions = getRolePermissionsByRoleId(roleId);
+        
+        List<PermissionInfo> permissionInfos = rolePermissions.stream()
+                .map(rp -> PermissionInfo.builder()
+                        .permissionId(rp.getPermission().getPermissionId())
+                        .permissionName(rp.getPermission().getPermissionName())
+                        .build())
+                .collect(Collectors.toList());
+        
+        return RolePermissionsResponse.builder()
+                .roleId(roleId)
+                .permissions(permissionInfos)
+                .build();
     }
 
     private RolePermission convertToModel(RolePermissionEntity entity) {

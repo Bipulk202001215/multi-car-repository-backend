@@ -1,5 +1,7 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.Company;
 import com.multicar.repository.demo.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,9 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     public ResponseEntity<Company> getCompanyById(@PathVariable String companyId) {
-        return companyService.getCompanyById(companyId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Company company = companyService.getCompanyById(companyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + companyId, ErrorCode.COMPANY_NOT_FOUND));
+        return ResponseEntity.ok(company);
     }
 
     @GetMapping
@@ -39,25 +41,25 @@ public class CompanyController {
     public ResponseEntity<Company> updateCompany(
             @PathVariable String companyId,
             @RequestBody Company company) {
-        return companyService.updateCompany(companyId, company)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Company updatedCompany = companyService.updateCompany(companyId, company)
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + companyId, ErrorCode.COMPANY_NOT_FOUND));
+        return ResponseEntity.ok(updatedCompany);
     }
 
     @DeleteMapping("/{companyId}")
     public ResponseEntity<Void> deleteCompany(@PathVariable String companyId) {
         boolean deleted = companyService.deleteCompany(companyId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Company not found with id: " + companyId, ErrorCode.COMPANY_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/gstin/{gstin}")
     public ResponseEntity<Company> getCompanyByGstin(@PathVariable String gstin) {
-        return companyService.getCompanyByGstin(gstin)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Company company = companyService.getCompanyByGstin(gstin)
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found with GSTIN: " + gstin, ErrorCode.COMPANY_NOT_FOUND));
+        return ResponseEntity.ok(company);
     }
 
     @GetMapping("/exists/gstin/{gstin}")

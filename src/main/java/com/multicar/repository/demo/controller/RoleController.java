@@ -1,6 +1,8 @@
 package com.multicar.repository.demo.controller;
 
 import com.multicar.repository.demo.enums.UserRole;
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.Role;
 import com.multicar.repository.demo.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +27,9 @@ public class RoleController {
 
     @GetMapping("/{roleId}")
     public ResponseEntity<Role> getRoleById(@PathVariable String roleId) {
-        return roleService.getRoleById(roleId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Role role = roleService.getRoleById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + roleId, ErrorCode.ROLE_NOT_FOUND));
+        return ResponseEntity.ok(role);
     }
 
     @GetMapping
@@ -40,25 +42,25 @@ public class RoleController {
     public ResponseEntity<Role> updateRole(
             @PathVariable String roleId,
             @RequestBody Role role) {
-        return roleService.updateRole(roleId, role)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Role updatedRole = roleService.updateRole(roleId, role)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + roleId, ErrorCode.ROLE_NOT_FOUND));
+        return ResponseEntity.ok(updatedRole);
     }
 
     @DeleteMapping("/{roleId}")
     public ResponseEntity<Void> deleteRole(@PathVariable String roleId) {
         boolean deleted = roleService.deleteRole(roleId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Role not found with id: " + roleId, ErrorCode.ROLE_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/name/{roleName}")
     public ResponseEntity<Role> getRoleByName(@PathVariable UserRole roleName) {
-        return roleService.getRoleByName(roleName)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Role role = roleService.getRoleByName(roleName)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with name: " + roleName, ErrorCode.ROLE_NOT_FOUND));
+        return ResponseEntity.ok(role);
     }
 
     @GetMapping("/exists/name/{roleName}")

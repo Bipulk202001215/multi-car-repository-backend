@@ -1,5 +1,7 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.CreateInventoryRequest;
 import com.multicar.repository.demo.model.Inventory;
 import com.multicar.repository.demo.model.InventoryAlert;
@@ -44,9 +46,9 @@ public class InventoryController {
     // Additional CRUD endpoints
     @GetMapping("/{inventoryId}")
     public ResponseEntity<Inventory> getInventoryById(@PathVariable String inventoryId) {
-        return inventoryService.getInventoryById(inventoryId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Inventory inventory = inventoryService.getInventoryById(inventoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found with id: " + inventoryId, ErrorCode.INVENTORY_NOT_FOUND));
+        return ResponseEntity.ok(inventory);
     }
 
     @GetMapping
@@ -59,18 +61,18 @@ public class InventoryController {
     public ResponseEntity<Inventory> updateInventory(
             @PathVariable String inventoryId,
             @RequestBody CreateInventoryRequest request) {
-        return inventoryService.updateInventory(inventoryId, request)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Inventory updatedInventory = inventoryService.updateInventory(inventoryId, request)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found with id: " + inventoryId, ErrorCode.INVENTORY_NOT_FOUND));
+        return ResponseEntity.ok(updatedInventory);
     }
 
     @DeleteMapping("/{inventoryId}")
     public ResponseEntity<Void> deleteInventory(@PathVariable String inventoryId) {
         boolean deleted = inventoryService.deleteInventory(inventoryId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Inventory not found with id: " + inventoryId, ErrorCode.INVENTORY_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 }
 

@@ -1,5 +1,7 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.Supplier;
 import com.multicar.repository.demo.service.SupplierService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,9 @@ public class SupplierController {
 
     @GetMapping("/{supplierId}")
     public ResponseEntity<Supplier> getSupplierById(@PathVariable String supplierId) {
-        return supplierService.getSupplierById(supplierId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Supplier supplier = supplierService.getSupplierById(supplierId)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + supplierId, ErrorCode.SUPPLIER_NOT_FOUND));
+        return ResponseEntity.ok(supplier);
     }
 
     @GetMapping
@@ -39,18 +41,18 @@ public class SupplierController {
     public ResponseEntity<Supplier> updateSupplier(
             @PathVariable String supplierId,
             @RequestBody Supplier supplier) {
-        return supplierService.updateSupplier(supplierId, supplier)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Supplier updatedSupplier = supplierService.updateSupplier(supplierId, supplier)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + supplierId, ErrorCode.SUPPLIER_NOT_FOUND));
+        return ResponseEntity.ok(updatedSupplier);
     }
 
     @DeleteMapping("/{supplierId}")
     public ResponseEntity<Void> deleteSupplier(@PathVariable String supplierId) {
         boolean deleted = supplierService.deleteSupplier(supplierId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Supplier not found with id: " + supplierId, ErrorCode.SUPPLIER_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/company/{companyId}")
@@ -61,9 +63,9 @@ public class SupplierController {
 
     @GetMapping("/gstin/{gstin}")
     public ResponseEntity<Supplier> getSupplierByGstin(@PathVariable String gstin) {
-        return supplierService.getSupplierByGstin(gstin)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Supplier supplier = supplierService.getSupplierByGstin(gstin)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with GSTIN: " + gstin, ErrorCode.SUPPLIER_NOT_FOUND));
+        return ResponseEntity.ok(supplier);
     }
 }
 

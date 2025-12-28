@@ -1,6 +1,9 @@
 package com.multicar.repository.demo.controller;
 
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.RolePermission;
+import com.multicar.repository.demo.model.RolePermissionsResponse;
 import com.multicar.repository.demo.service.RolePermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,9 +27,9 @@ public class RolePermissionController {
 
     @GetMapping("/{rolePermissionId}")
     public ResponseEntity<RolePermission> getRolePermissionById(@PathVariable String rolePermissionId) {
-        return rolePermissionService.getRolePermissionById(rolePermissionId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        RolePermission rolePermission = rolePermissionService.getRolePermissionById(rolePermissionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role permission not found with id: " + rolePermissionId, ErrorCode.ROLE_PERMISSION_NOT_FOUND));
+        return ResponseEntity.ok(rolePermission);
     }
 
     @GetMapping
@@ -39,24 +42,24 @@ public class RolePermissionController {
     public ResponseEntity<RolePermission> updateRolePermission(
             @PathVariable String rolePermissionId,
             @RequestBody RolePermission rolePermission) {
-        return rolePermissionService.updateRolePermission(rolePermissionId, rolePermission)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        RolePermission updatedRolePermission = rolePermissionService.updateRolePermission(rolePermissionId, rolePermission)
+                .orElseThrow(() -> new ResourceNotFoundException("Role permission not found with id: " + rolePermissionId, ErrorCode.ROLE_PERMISSION_NOT_FOUND));
+        return ResponseEntity.ok(updatedRolePermission);
     }
 
     @DeleteMapping("/{rolePermissionId}")
     public ResponseEntity<Void> deleteRolePermission(@PathVariable String rolePermissionId) {
         boolean deleted = rolePermissionService.deleteRolePermission(rolePermissionId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Role permission not found with id: " + rolePermissionId, ErrorCode.ROLE_PERMISSION_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/role/{roleId}")
-    public ResponseEntity<List<RolePermission>> getRolePermissionsByRoleId(@PathVariable String roleId) {
-        List<RolePermission> rolePermissions = rolePermissionService.getRolePermissionsByRoleId(roleId);
-        return ResponseEntity.ok(rolePermissions);
+    public ResponseEntity<RolePermissionsResponse> getRolePermissionsByRoleId(@PathVariable String roleId) {
+        RolePermissionsResponse response = rolePermissionService.getRolePermissionsResponseByRoleId(roleId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/permission/{permissionId}")

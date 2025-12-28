@@ -2,6 +2,8 @@ package com.multicar.repository.demo.controller;
 
 import com.multicar.repository.demo.enums.PaymentMode;
 import com.multicar.repository.demo.enums.PaymentStatus;
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.CreateInvoiceRequest;
 import com.multicar.repository.demo.model.Invoice;
 import com.multicar.repository.demo.service.InvoiceService;
@@ -27,9 +29,9 @@ public class InvoiceController {
 
     @GetMapping("/{invoiceId}")
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable String invoiceId) {
-        return invoiceService.getInvoiceById(invoiceId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Invoice invoice = invoiceService.getInvoiceById(invoiceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with id: " + invoiceId, ErrorCode.INVOICE_NOT_FOUND));
+        return ResponseEntity.ok(invoice);
     }
 
     @GetMapping
@@ -42,18 +44,18 @@ public class InvoiceController {
     public ResponseEntity<Invoice> updateInvoice(
             @PathVariable String invoiceId,
             @RequestBody CreateInvoiceRequest request) {
-        return invoiceService.updateInvoice(invoiceId, request)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Invoice updatedInvoice = invoiceService.updateInvoice(invoiceId, request)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with id: " + invoiceId, ErrorCode.INVOICE_NOT_FOUND));
+        return ResponseEntity.ok(updatedInvoice);
     }
 
     @DeleteMapping("/{invoiceId}")
     public ResponseEntity<Void> deleteInvoice(@PathVariable String invoiceId) {
         boolean deleted = invoiceService.deleteInvoice(invoiceId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+        if (!deleted) {
+            throw new ResourceNotFoundException("Invoice not found with id: " + invoiceId, ErrorCode.INVOICE_NOT_FOUND);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/job/{jobId}")
@@ -73,9 +75,9 @@ public class InvoiceController {
             @PathVariable String invoiceId,
             @RequestParam PaymentStatus paymentStatus,
             @RequestParam(required = false) PaymentMode paymentMode) {
-        return invoiceService.updatePaymentStatus(invoiceId, paymentStatus, paymentMode)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Invoice updatedInvoice = invoiceService.updatePaymentStatus(invoiceId, paymentStatus, paymentMode)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with id: " + invoiceId, ErrorCode.INVOICE_NOT_FOUND));
+        return ResponseEntity.ok(updatedInvoice);
     }
 }
 
