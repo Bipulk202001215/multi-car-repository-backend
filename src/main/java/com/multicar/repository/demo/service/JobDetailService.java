@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,9 +18,9 @@ public class JobDetailService {
 
     private final JobDetailRepository jobDetailRepository;
 
-    public JobDetail createJobDetail(JobDescription jobDescription) {
+    public JobDetail createJobDetail(List<JobDescription> jobDescriptions) {
         JobDetailEntity entity = JobDetailEntity.builder()
-                .jobDescription(jobDescription)
+                .jobDescription(jobDescriptions)
                 .build();
         
         JobDetailEntity savedEntity = jobDetailRepository.save(entity);

@@ -1,14 +1,18 @@
 package com.multicar.repository.demo.entity;
 
+import com.multicar.repository.demo.converter.JobDescriptionListConverter;
 import com.multicar.repository.demo.generator.JobDetailIdGenerator;
 import com.multicar.repository.demo.model.JobDescription;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "JOB_DETAILS")
@@ -27,14 +31,10 @@ public class JobDetailEntity {
     @Column(name = "JBID", length = 50)
     private String jobDetailId;
     
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "serviceType", column = @Column(name = "service_type")),
-        @AttributeOverride(name = "description", column = @Column(name = "description", columnDefinition = "TEXT")),
-        @AttributeOverride(name = "assignedMechanicType", column = @Column(name = "assigned_mechanic_type")),
-        @AttributeOverride(name = "estimatedTime", column = @Column(name = "estimated_time"))
-    })
-    private JobDescription jobDescription;
+    @Convert(converter = JobDescriptionListConverter.class)
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "job_description", columnDefinition = "jsonb", nullable = true)
+    private List<JobDescription> jobDescription;
     
     @CreationTimestamp
     @Column(name = "created_on", updatable = false)

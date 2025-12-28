@@ -5,6 +5,7 @@ import com.multicar.repository.demo.enums.JobStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -17,12 +18,13 @@ import java.time.LocalDateTime;
 public class CreateJobRequest {
     private String vehicleNumber;
     private Integer kmReading;
+    private String mobileNumber;
     private LocalDateTime jobDate;
     private JobStatus status;
     private LocalDateTime checkinTime;
     private LocalDateTime estimatedDelivery;
     private String companyId;
-    private JobDescription jobDescription;
+    private List<JobDescription> jobDescription;
 }
 
 

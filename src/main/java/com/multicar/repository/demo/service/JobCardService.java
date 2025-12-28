@@ -24,9 +24,10 @@ public class JobCardService {
     private final JobDetailRepository jobDetailRepository;
 
     public JobCard createJob(CreateJobRequest request) {
-        // Create JobDetailEntity first
+        // Create ONE JobDetailEntity with the entire list of job descriptions
+        // The entire List<JobDescription> will be stored as JSON in a single JobDetailEntity record
         JobDetailEntity jobDetailEntity = JobDetailEntity.builder()
-                .jobDescription(request.getJobDescription())
+                .jobDescription(request.getJobDescription()) // Stores entire list as JSON
                 .build();
         
         JobDetailEntity savedJobDetail = jobDetailRepository.save(jobDetailEntity);
@@ -72,11 +73,21 @@ public class JobCardService {
                     existingEntity.setEstimatedDelivery(request.getEstimatedDelivery());
                     // invoice_id is not updated from request, keep existing value
                     
-                    // Update job detail if provided
-                    if (request.getJobDescription() != null && existingEntity.getJobDetailId() != null) {
+                    // Always maintain/update jobDescription
+                    if (request.getJobDescription() != null) {
                         JobDetailEntity jobDetail = existingEntity.getJobDetailId();
-                        jobDetail.setJobDescription(request.getJobDescription());
-                        jobDetailRepository.save(jobDetail);
+                        if (jobDetail != null) {
+                            // Update existing job detail
+                            jobDetail.setJobDescription(request.getJobDescription());
+                            jobDetailRepository.save(jobDetail);
+                        } else {
+                            // Create new job detail if it doesn't exist
+                            JobDetailEntity newJobDetail = JobDetailEntity.builder()
+                                    .jobDescription(request.getJobDescription())
+                                    .build();
+                            JobDetailEntity savedJobDetail = jobDetailRepository.save(newJobDetail);
+                            existingEntity.setJobDetailId(savedJobDetail);
+                        }
                     }
                     
                     JobCardEntity updatedEntity = jobCardRepository.save(existingEntity);

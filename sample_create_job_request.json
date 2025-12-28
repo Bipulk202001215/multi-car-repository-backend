@@ -1,0 +1,25 @@
+{
+  "vehicleNumber": "KA01AB1234",
+  "kmReading": 50000,
+  "mobileNumber": "+91-9876543210",
+  "jobDate": "2024-01-15T10:00:00",
+  "status": "PENDING",
+  "checkinTime": "2024-01-15T10:00:00",
+  "estimatedDelivery": "2024-01-17T18:00:00",
+  "companyId": "COMP001",
+  "jobDescription": [
+    {
+      "serviceType": "PERIODIC",
+      "description": "Regular service and oil change",
+      "assignedMechanicType": "Senior Mechanic",
+      "estimatedTime": "2 hours"
+    },
+    {
+      "serviceType": "AC",
+      "description": "AC service and gas refill",
+      "assignedMechanicType": "AC Specialist",
+      "estimatedTime": "1.5 hours"
+    }
+  ]
+}
+
