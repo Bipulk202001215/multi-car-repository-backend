@@ -61,6 +61,12 @@ public class JobCardService {
                 .collect(Collectors.toList());
     }
 
+    public List<JobCard> getJobCardsByCompanyId(String companyId) {
+        return jobCardRepository.findByCompanyId(companyId).stream()
+                .map(this::convertToModel)
+                .collect(Collectors.toList());
+    }
+
     public Optional<JobCard> updateJobCard(String jobCardId, CreateJobRequest request) {
         return jobCardRepository.findByJobCardId(jobCardId)
                 .map(existingEntity -> {

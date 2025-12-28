@@ -38,6 +38,12 @@ public class JobController {
         return ResponseEntity.ok(jobCards);
     }
 
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<List<JobCard>> getJobCardsByCompanyId(@PathVariable String companyId) {
+        List<JobCard> jobCards = jobCardService.getJobCardsByCompanyId(companyId);
+        return ResponseEntity.ok(jobCards);
+    }
+
     @PutMapping("/{jobCardId}")
     public ResponseEntity<JobCard> updateJobCard(
             @PathVariable String jobCardId,
