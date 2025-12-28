@@ -42,3 +42,9 @@ INSERT INTO public.role_permission_entity
 (rolepermissionid, created_on, updated_on, permission_id, role_id)
 VALUES('RPID251228145421', '2025-12-28 14:54:21.249', '2025-12-28 14:54:21.249', 'PERMID251227000008', 'ROLEID251227000001');
 
+INSERT INTO public.user_entity
+(usid, created_on, email_id, "password", updated_on, user_type, company_id)
+VALUES('USID251228134249', '2025-12-28 13:42:49.477', 'superadmin@multicar.com', '$2a$10$9WfXL/Xr3ToBBGIL1aGLvuoaXVi1lox0rXITzfZKLbPYXE8tiu8b6', '2025-12-28 13:42:49.477', 'SUPER_ADMIN', NULL);
+INSERT INTO public.user_entity
+(usid, created_on, email_id, "password", updated_on, user_type, company_id)
+VALUES('USID251228141737', '2025-12-28 14:17:37.323', 'bipulk3335@gmail.com', '$2a$10$I602bkcnHsgj47Mnslq1me3gh5iVMIr3IrW2wXm2bBApp0vOad1Ja', '2025-12-28 14:17:37.323', 'COMPANY_USER', 'COMPID20251228141634174');
