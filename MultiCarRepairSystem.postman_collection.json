@@ -7,10 +7,27 @@
 	},
 	"item": [
 		{
-			"name": "Companies",
+			"name": "Authentication",
 			"item": [
 				{
-					"name": "Create Company",
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"jwt_token\", jsonData.token);",
+									"    pm.environment.set(\"current_userId\", jsonData.userId);",
+									"    pm.environment.set(\"current_emailId\", jsonData.emailId);",
+									"    console.log(\"Token saved to environment\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -21,12 +38,54 @@
 						],
 						"body": {
 							"mode": "raw",
+							"raw": "{\n  \"emailId\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{api_base}}/auth/login",
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login endpoint that authenticates user and returns JWT token. The token is automatically saved to the environment variable 'jwt_token' for use in subsequent requests."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
 							"raw": "{\n  \"companyName\": \"ABC Auto Repair\",\n  \"gstIn\": \"29ABCDE1234F1Z5\"\n}"
 						},
 						"url": {
 							"raw": "{{api_base}}/companies",
-							"host": ["{{api_base}}"],
-							"path": ["companies"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies"
+							]
 						}
 					}
 				},
@@ -34,11 +93,22 @@
 					"name": "Get Company by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/companies/{{companyId}}",
-							"host": ["{{api_base}}"],
-							"path": ["companies", "{{companyId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}"
+							]
 						}
 					}
 				},
@@ -46,11 +116,21 @@
 					"name": "Get All Companies",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/companies",
-							"host": ["{{api_base}}"],
-							"path": ["companies"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies"
+							]
 						}
 					}
 				},
@@ -62,6 +142,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -70,8 +155,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/companies/{{companyId}}",
-							"host": ["{{api_base}}"],
-							"path": ["companies", "{{companyId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}"
+							]
 						}
 					}
 				},
@@ -79,11 +169,22 @@
 					"name": "Delete Company",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/companies/{{companyId}}",
-							"host": ["{{api_base}}"],
-							"path": ["companies", "{{companyId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}"
+							]
 						}
 					}
 				},
@@ -91,11 +192,23 @@
 					"name": "Get Company by GSTIN",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/companies/gstin/29ABCDE1234F1Z5",
-							"host": ["{{api_base}}"],
-							"path": ["companies", "gstin", "29ABCDE1234F1Z5"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies",
+								"gstin",
+								"29ABCDE1234F1Z5"
+							]
 						}
 					}
 				},
@@ -103,11 +216,24 @@
 					"name": "Check GSTIN Exists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/companies/exists/gstin/29ABCDE1234F1Z5",
-							"host": ["{{api_base}}"],
-							"path": ["companies", "exists", "gstin", "29ABCDE1234F1Z5"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"companies",
+								"exists",
+								"gstin",
+								"29ABCDE1234F1Z5"
+							]
 						}
 					}
 				}
@@ -124,6 +250,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -132,8 +263,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/inventory",
-							"host": ["{{api_base}}"],
-							"path": ["inventory"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory"
+							]
 						}
 					}
 				},
@@ -145,6 +280,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -153,8 +293,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/inventory/sell",
-							"host": ["{{api_base}}"],
-							"path": ["inventory", "sell"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"sell"
+							]
 						}
 					}
 				},
@@ -162,11 +307,22 @@
 					"name": "Get Stock Alerts",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/inventory/alerts?companyId={{companyId}}",
-							"host": ["{{api_base}}"],
-							"path": ["inventory", "alerts"],
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"alerts"
+							],
 							"query": [
 								{
 									"key": "companyId",
@@ -181,11 +337,22 @@
 					"name": "Get Inventory by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/inventory/{{inventoryId}}",
-							"host": ["{{api_base}}"],
-							"path": ["inventory", "{{inventoryId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"{{inventoryId}}"
+							]
 						}
 					}
 				},
@@ -193,11 +360,21 @@
 					"name": "Get All Inventories",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/inventory",
-							"host": ["{{api_base}}"],
-							"path": ["inventory"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory"
+							]
 						}
 					}
 				},
@@ -209,6 +386,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -217,8 +399,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/inventory/{{inventoryId}}",
-							"host": ["{{api_base}}"],
-							"path": ["inventory", "{{inventoryId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"{{inventoryId}}"
+							]
 						}
 					}
 				},
@@ -226,11 +413,22 @@
 					"name": "Delete Inventory",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/inventory/{{inventoryId}}",
-							"host": ["{{api_base}}"],
-							"path": ["inventory", "{{inventoryId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"{{inventoryId}}"
+							]
 						}
 					}
 				}
@@ -247,6 +445,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -255,8 +458,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/invoices",
-							"host": ["{{api_base}}"],
-							"path": ["invoices"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices"
+							]
 						}
 					}
 				},
@@ -264,11 +471,22 @@
 					"name": "Get Invoice by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/invoices/{{invoiceId}}",
-							"host": ["{{api_base}}"],
-							"path": ["invoices", "{{invoiceId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices",
+								"{{invoiceId}}"
+							]
 						}
 					}
 				},
@@ -276,11 +494,21 @@
 					"name": "Get All Invoices",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/invoices",
-							"host": ["{{api_base}}"],
-							"path": ["invoices"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices"
+							]
 						}
 					}
 				},
@@ -292,6 +520,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -300,8 +533,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/invoices/{{invoiceId}}",
-							"host": ["{{api_base}}"],
-							"path": ["invoices", "{{invoiceId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices",
+								"{{invoiceId}}"
+							]
 						}
 					}
 				},
@@ -309,11 +547,22 @@
 					"name": "Delete Invoice",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/invoices/{{invoiceId}}",
-							"host": ["{{api_base}}"],
-							"path": ["invoices", "{{invoiceId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices",
+								"{{invoiceId}}"
+							]
 						}
 					}
 				},
@@ -321,11 +570,23 @@
 					"name": "Get Invoices by Job ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/invoices/job/{{jobCardId}}",
-							"host": ["{{api_base}}"],
-							"path": ["invoices", "job", "{{jobCardId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices",
+								"job",
+								"{{jobCardId}}"
+							]
 						}
 					}
 				},
@@ -333,11 +594,23 @@
 					"name": "Get Invoices by Payment Status",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/invoices/status/PENDING",
-							"host": ["{{api_base}}"],
-							"path": ["invoices", "status", "PENDING"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices",
+								"status",
+								"PENDING"
+							]
 						}
 					}
 				},
@@ -345,11 +618,23 @@
 					"name": "Update Payment Status",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/invoices/{{invoiceId}}/payment?paymentStatus=COMPLETED&paymentMode=UPI",
-							"host": ["{{api_base}}"],
-							"path": ["invoices", "{{invoiceId}}", "payment"],
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"invoices",
+								"{{invoiceId}}",
+								"payment"
+							],
 							"query": [
 								{
 									"key": "paymentStatus",
@@ -377,6 +662,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -385,8 +675,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/jobs",
-							"host": ["{{api_base}}"],
-							"path": ["jobs"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"jobs"
+							]
 						}
 					}
 				},
@@ -394,11 +688,22 @@
 					"name": "Get Job by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/jobs/{{jobCardId}}",
-							"host": ["{{api_base}}"],
-							"path": ["jobs", "{{jobCardId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"jobs",
+								"{{jobCardId}}"
+							]
 						}
 					}
 				},
@@ -406,11 +711,21 @@
 					"name": "Get All Jobs",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/jobs",
-							"host": ["{{api_base}}"],
-							"path": ["jobs"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"jobs"
+							]
 						}
 					}
 				},
@@ -422,6 +737,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -430,8 +750,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/jobs/{{jobCardId}}",
-							"host": ["{{api_base}}"],
-							"path": ["jobs", "{{jobCardId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"jobs",
+								"{{jobCardId}}"
+							]
 						}
 					}
 				},
@@ -439,11 +764,22 @@
 					"name": "Delete Job",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/jobs/{{jobCardId}}",
-							"host": ["{{api_base}}"],
-							"path": ["jobs", "{{jobCardId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"jobs",
+								"{{jobCardId}}"
+							]
 						}
 					}
 				}
@@ -460,6 +796,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -468,8 +809,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/permissions",
-							"host": ["{{api_base}}"],
-							"path": ["permissions"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions"
+							]
 						}
 					}
 				},
@@ -477,11 +822,22 @@
 					"name": "Get Permission by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/permissions/{{permissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["permissions", "{{permissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions",
+								"{{permissionId}}"
+							]
 						}
 					}
 				},
@@ -489,11 +845,21 @@
 					"name": "Get All Permissions",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/permissions",
-							"host": ["{{api_base}}"],
-							"path": ["permissions"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions"
+							]
 						}
 					}
 				},
@@ -505,6 +871,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -513,8 +884,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/permissions/{{permissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["permissions", "{{permissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions",
+								"{{permissionId}}"
+							]
 						}
 					}
 				},
@@ -522,11 +898,22 @@
 					"name": "Delete Permission",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/permissions/{{permissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["permissions", "{{permissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions",
+								"{{permissionId}}"
+							]
 						}
 					}
 				},
@@ -534,11 +921,23 @@
 					"name": "Get Permission by Name",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/permissions/name/USER_MANAGEMENT",
-							"host": ["{{api_base}}"],
-							"path": ["permissions", "name", "USER_MANAGEMENT"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions",
+								"name",
+								"USER_MANAGEMENT"
+							]
 						}
 					}
 				},
@@ -546,11 +945,24 @@
 					"name": "Check Permission Name Exists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/permissions/exists/name/USER_MANAGEMENT",
-							"host": ["{{api_base}}"],
-							"path": ["permissions", "exists", "name", "USER_MANAGEMENT"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"permissions",
+								"exists",
+								"name",
+								"USER_MANAGEMENT"
+							]
 						}
 					}
 				}
@@ -567,6 +979,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -575,8 +992,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/roles",
-							"host": ["{{api_base}}"],
-							"path": ["roles"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles"
+							]
 						}
 					}
 				},
@@ -584,11 +1005,22 @@
 					"name": "Get Role by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/roles/{{roleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["roles", "{{roleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles",
+								"{{roleId}}"
+							]
 						}
 					}
 				},
@@ -596,11 +1028,21 @@
 					"name": "Get All Roles",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/roles",
-							"host": ["{{api_base}}"],
-							"path": ["roles"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles"
+							]
 						}
 					}
 				},
@@ -612,6 +1054,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -620,8 +1067,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/roles/{{roleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["roles", "{{roleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles",
+								"{{roleId}}"
+							]
 						}
 					}
 				},
@@ -629,11 +1081,22 @@
 					"name": "Delete Role",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/roles/{{roleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["roles", "{{roleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles",
+								"{{roleId}}"
+							]
 						}
 					}
 				},
@@ -641,11 +1104,23 @@
 					"name": "Get Role by Name",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/roles/name/ADMIN",
-							"host": ["{{api_base}}"],
-							"path": ["roles", "name", "ADMIN"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles",
+								"name",
+								"ADMIN"
+							]
 						}
 					}
 				},
@@ -653,11 +1128,24 @@
 					"name": "Check Role Name Exists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/roles/exists/name/ADMIN",
-							"host": ["{{api_base}}"],
-							"path": ["roles", "exists", "name", "ADMIN"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"roles",
+								"exists",
+								"name",
+								"ADMIN"
+							]
 						}
 					}
 				}
@@ -674,6 +1162,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -682,8 +1175,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/role-permissions",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions"
+							]
 						}
 					}
 				},
@@ -691,11 +1188,22 @@
 					"name": "Get Role Permission by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/role-permissions/{{rolePermissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions", "{{rolePermissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions",
+								"{{rolePermissionId}}"
+							]
 						}
 					}
 				},
@@ -703,11 +1211,21 @@
 					"name": "Get All Role Permissions",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/role-permissions",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions"
+							]
 						}
 					}
 				},
@@ -719,6 +1237,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -727,8 +1250,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/role-permissions/{{rolePermissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions", "{{rolePermissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions",
+								"{{rolePermissionId}}"
+							]
 						}
 					}
 				},
@@ -736,11 +1264,22 @@
 					"name": "Delete Role Permission",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/role-permissions/{{rolePermissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions", "{{rolePermissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions",
+								"{{rolePermissionId}}"
+							]
 						}
 					}
 				},
@@ -748,11 +1287,23 @@
 					"name": "Get Role Permissions by Role ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/role-permissions/role/{{roleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions", "role", "{{roleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions",
+								"role",
+								"{{roleId}}"
+							]
 						}
 					}
 				},
@@ -760,11 +1311,23 @@
 					"name": "Get Role Permissions by Permission ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/role-permissions/permission/{{permissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions", "permission", "{{permissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions",
+								"permission",
+								"{{permissionId}}"
+							]
 						}
 					}
 				},
@@ -772,11 +1335,26 @@
 					"name": "Check Role Permission Exists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/role-permissions/exists/role/{{roleId}}/permission/{{permissionId}}",
-							"host": ["{{api_base}}"],
-							"path": ["role-permissions", "exists", "role", "{{roleId}}", "permission", "{{permissionId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"role-permissions",
+								"exists",
+								"role",
+								"{{roleId}}",
+								"permission",
+								"{{permissionId}}"
+							]
 						}
 					}
 				}
@@ -793,6 +1371,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -801,8 +1384,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/suppliers",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers"
+							]
 						}
 					}
 				},
@@ -810,11 +1397,22 @@
 					"name": "Get Supplier by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/suppliers/{{supplierId}}",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers", "{{supplierId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers",
+								"{{supplierId}}"
+							]
 						}
 					}
 				},
@@ -822,11 +1420,21 @@
 					"name": "Get All Suppliers",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/suppliers",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers"
+							]
 						}
 					}
 				},
@@ -838,6 +1446,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -846,8 +1459,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/suppliers/{{supplierId}}",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers", "{{supplierId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers",
+								"{{supplierId}}"
+							]
 						}
 					}
 				},
@@ -855,11 +1473,22 @@
 					"name": "Delete Supplier",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/suppliers/{{supplierId}}",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers", "{{supplierId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers",
+								"{{supplierId}}"
+							]
 						}
 					}
 				},
@@ -867,11 +1496,23 @@
 					"name": "Get Suppliers by Company ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/suppliers/company/{{companyId}}",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers", "company", "{{companyId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers",
+								"company",
+								"{{companyId}}"
+							]
 						}
 					}
 				},
@@ -879,11 +1520,23 @@
 					"name": "Get Supplier by GSTIN",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/suppliers/gstin/29ABCDE1234F1Z6",
-							"host": ["{{api_base}}"],
-							"path": ["suppliers", "gstin", "29ABCDE1234F1Z6"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"suppliers",
+								"gstin",
+								"29ABCDE1234F1Z6"
+							]
 						}
 					}
 				}
@@ -900,6 +1553,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -908,8 +1566,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/users",
-							"host": ["{{api_base}}"],
-							"path": ["users"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users"
+							]
 						}
 					}
 				},
@@ -917,11 +1579,22 @@
 					"name": "Get User by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users/{{userId}}",
-							"host": ["{{api_base}}"],
-							"path": ["users", "{{userId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
 						}
 					}
 				},
@@ -929,11 +1602,21 @@
 					"name": "Get All Users",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users",
-							"host": ["{{api_base}}"],
-							"path": ["users"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users"
+							]
 						}
 					}
 				},
@@ -945,6 +1628,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -953,8 +1641,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/users/{{userId}}",
-							"host": ["{{api_base}}"],
-							"path": ["users", "{{userId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
 						}
 					}
 				},
@@ -962,11 +1655,22 @@
 					"name": "Delete User",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users/{{userId}}",
-							"host": ["{{api_base}}"],
-							"path": ["users", "{{userId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"{{userId}}"
+							]
 						}
 					}
 				},
@@ -974,11 +1678,23 @@
 					"name": "Get User by Email",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users/email/user@example.com",
-							"host": ["{{api_base}}"],
-							"path": ["users", "email", "user@example.com"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"email",
+								"user@example.com"
+							]
 						}
 					}
 				},
@@ -986,11 +1702,23 @@
 					"name": "Get Users by Company ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users/company/{{companyId}}",
-							"host": ["{{api_base}}"],
-							"path": ["users", "company", "{{companyId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"company",
+								"{{companyId}}"
+							]
 						}
 					}
 				},
@@ -998,11 +1726,23 @@
 					"name": "Get Users by User Type",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users/type/COMPANY_USER",
-							"host": ["{{api_base}}"],
-							"path": ["users", "type", "COMPANY_USER"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"type",
+								"COMPANY_USER"
+							]
 						}
 					}
 				},
@@ -1010,11 +1750,24 @@
 					"name": "Check Email Exists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/users/exists/email/user@example.com",
-							"host": ["{{api_base}}"],
-							"path": ["users", "exists", "email", "user@example.com"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"users",
+								"exists",
+								"email",
+								"user@example.com"
+							]
 						}
 					}
 				}
@@ -1031,6 +1784,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1039,8 +1797,12 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/user-roles",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles"
+							]
 						}
 					}
 				},
@@ -1048,11 +1810,22 @@
 					"name": "Get User Role by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/user-roles/{{userRoleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles", "{{userRoleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles",
+								"{{userRoleId}}"
+							]
 						}
 					}
 				},
@@ -1060,11 +1833,21 @@
 					"name": "Get All User Roles",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/user-roles",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles"
+							]
 						}
 					}
 				},
@@ -1076,6 +1859,11 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -1084,8 +1872,13 @@
 						},
 						"url": {
 							"raw": "{{api_base}}/user-roles/{{userRoleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles", "{{userRoleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles",
+								"{{userRoleId}}"
+							]
 						}
 					}
 				},
@@ -1093,11 +1886,22 @@
 					"name": "Delete User Role",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/user-roles/{{userRoleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles", "{{userRoleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles",
+								"{{userRoleId}}"
+							]
 						}
 					}
 				},
@@ -1105,11 +1909,23 @@
 					"name": "Get User Roles by User ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/user-roles/user/{{userId}}",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles", "user", "{{userId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles",
+								"user",
+								"{{userId}}"
+							]
 						}
 					}
 				},
@@ -1117,11 +1933,23 @@
 					"name": "Get User Roles by Role ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/user-roles/role/{{roleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles", "role", "{{roleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles",
+								"role",
+								"{{roleId}}"
+							]
 						}
 					}
 				},
@@ -1129,11 +1957,26 @@
 					"name": "Check User Role Exists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{api_base}}/user-roles/exists/user/{{userId}}/role/{{roleId}}",
-							"host": ["{{api_base}}"],
-							"path": ["user-roles", "exists", "user", "{{userId}}", "role", "{{roleId}}"]
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"user-roles",
+								"exists",
+								"user",
+								"{{userId}}",
+								"role",
+								"{{roleId}}"
+							]
 						}
 					}
 				}
@@ -1148,6 +1991,3 @@
 		}
 	]
 }
-
-
-

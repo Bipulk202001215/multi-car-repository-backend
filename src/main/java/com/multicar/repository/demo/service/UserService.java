@@ -131,6 +131,15 @@ public class UserService {
         return userRepository.existsByEmailId(emailId);
     }
 
+    public boolean validateUserPassword(String emailId, String rawPassword) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByEmailId(emailId);
+        if (userEntityOptional.isEmpty()) {
+            return false;
+        }
+        UserEntity userEntity = userEntityOptional.get();
+        return passwordEncoder.matches(rawPassword, userEntity.getPassword());
+    }
+
     private User convertToModel(UserEntity entity) {
         Company company = null;
         if (entity.getCompanyId() != null) {
