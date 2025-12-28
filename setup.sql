@@ -48,3 +48,9 @@ VALUES('USID251228134249', '2025-12-28 13:42:49.477', 'superadmin@multicar.com',
 INSERT INTO public.user_entity
 (usid, created_on, email_id, "password", updated_on, user_type, company_id)
 VALUES('USID251228141737', '2025-12-28 14:17:37.323', 'bipulk3335@gmail.com', '$2a$10$I602bkcnHsgj47Mnslq1me3gh5iVMIr3IrW2wXm2bBApp0vOad1Ja', '2025-12-28 14:17:37.323', 'COMPANY_USER', 'COMPID20251228141634174');
+
+
+
+INSERT INTO public.company_entity
+(compid, company_name, created_on, gstin, updated_on)
+VALUES('COMPID20251228141634174', '24*7 auto nation', '2025-12-28 14:16:34.189', '29ABCDE1234F1Z5', '2025-12-28 14:16:34.189');
