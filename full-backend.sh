@@ -9,7 +9,7 @@ DOCKER_TOKEN=dckr_pat_45os7KW8NwnMML7VJ48RY94ZrAg
 NETWORK=app-network
 
 BACKEND_IMAGE=bipulk3335/multi-car-repair
-FRONTEND_IMAGE=bipulk3335/multi-car-repository-frontend
+FRONTEND_IMAGE=bipulk3335/test-frontend
 
 # =========================
 # LOGIN USING TOKEN
@@ -48,9 +48,9 @@ docker run -d \
 docker run -d \
   --name frontend \
   --network $NETWORK \
-  -p 3000:3000 \
-  -e NEXT_PUBLIC_API_BASE_URL=http://backend:8080 \
+  -p 3001:3001 \
+  -e VITE_API_BASE_URL=http://localhost:8080 \
   $FRONTEND_IMAGE
 
-echo "✅ Frontend: http://localhost:3000"
+echo "✅ Frontend: http://localhost:3001"
 echo "✅ Backend : http://localhost:8080"
