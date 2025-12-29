@@ -31,7 +31,7 @@ public class SecurityConfig {
 //        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
 //
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/api/**", configuration);
+//        source.registerCorsConfiguration("**", configuration);
 //        return source;
 //    }
     @Bean
