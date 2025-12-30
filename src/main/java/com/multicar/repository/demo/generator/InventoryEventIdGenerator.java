@@ -6,13 +6,13 @@ import org.hibernate.id.IdentifierGenerator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class InventoryIdGenerator implements IdentifierGenerator {
+public class InventoryEventIdGenerator implements IdentifierGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) {
         LocalDateTime now = LocalDateTime.now();
-        // Format: INVID + year + month + day + hour + minute + second + milliseconds
-        // Example: INVID20241225143052123
+        // Format: EVTID + year + month + day + hour + minute + second + milliseconds
+        // Example: EVTID20241225143052123
         String timestamp = String.format("%04d%02d%02d%02d%02d%02d%03d",
                 now.getYear(),
                 now.getMonthValue(),
@@ -21,11 +21,8 @@ public class InventoryIdGenerator implements IdentifierGenerator {
                 now.getMinute(),
                 now.getSecond(),
                 now.getNano() / 1_000_000);
-        return "INVID" + timestamp;
+        return "EVTID" + timestamp;
     }
 }
-
-
-
 
 

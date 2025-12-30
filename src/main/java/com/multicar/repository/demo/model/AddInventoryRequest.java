@@ -13,14 +13,10 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SellFromInventory {
-    private Integer requestedUnits;
+public class AddInventoryRequest {
     private String partCode;
-    private String jobId;
-    private BigDecimal discountRate; // Percentage as decimal (e.g., 10.0 for 10%)
+    private Integer units; // MANDATORY
+    private BigDecimal unitsPrice; // MANDATORY
 }
-
-
-
 
 

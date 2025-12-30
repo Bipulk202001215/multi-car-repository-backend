@@ -2,12 +2,12 @@ package com.multicar.repository.demo.controller;
 
 import com.multicar.repository.demo.exception.ErrorCode;
 import com.multicar.repository.demo.exception.ResourceNotFoundException;
-import com.multicar.repository.demo.model.CreateInventoryRequest;
-import com.multicar.repository.demo.model.Inventory;
-import com.multicar.repository.demo.model.InventoryAlert;
-import com.multicar.repository.demo.model.SellFromInventoryRequest;
-import com.multicar.repository.demo.model.SoldInventoryItem;
-import com.multicar.repository.demo.service.InventoryService;
+import com.multicar.repository.demo.model.AddInventoryRequest;
+import com.multicar.repository.demo.model.InventoryEventModel;
+import com.multicar.repository.demo.model.Partcode;
+import com.multicar.repository.demo.model.SellInventoryRequest;
+import com.multicar.repository.demo.service.InventoryEventService;
+import com.multicar.repository.demo.service.PartcodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,59 +20,58 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InventoryController {
 
-    private final InventoryService inventoryService;
+    private final PartcodeService partcodeService;
+    private final InventoryEventService inventoryEventService;
 
-    // Controller 1: Create Inventory
-    @PostMapping
-    public ResponseEntity<Inventory> createInventory(@RequestBody CreateInventoryRequest request) {
-        Inventory createdInventory = inventoryService.createInventory(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdInventory);
+    // Add units to inventory
+    @PostMapping("/add")
+    public ResponseEntity<InventoryEventModel> addUnits(@RequestBody AddInventoryRequest request) {
+        InventoryEventModel event = partcodeService.addUnits(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(event);
     }
 
-    // Controller 2: Sell From Inventory
+    // Sell units from inventory
     @PostMapping("/sell")
-    public ResponseEntity<List<SoldInventoryItem>> sellFromInventory(@RequestBody SellFromInventoryRequest request) {
-        List<SoldInventoryItem> soldItems = inventoryService.sellFromInventory(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(soldItems);
+    public ResponseEntity<InventoryEventModel> sellUnits(@RequestBody SellInventoryRequest request) {
+        InventoryEventModel event = partcodeService.sellUnits(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(event);
     }
 
-    // Controller 3: Get Stock Alerts
+    // Get partcode by part code
+    @GetMapping("/partcode/{partCode}")
+    public ResponseEntity<Partcode> getPartcodeByPartCode(@PathVariable String partCode) {
+        Partcode partcode = partcodeService.getPartcodeByPartCode(partCode)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Partcode not found with part code: " + partCode, 
+                        ErrorCode.PARTCODE_NOT_FOUND));
+        return ResponseEntity.ok(partcode);
+    }
+
+    // Get all partcodes
+    @GetMapping("/partcode")
+    public ResponseEntity<List<Partcode>> getAllPartcodes() {
+        List<Partcode> partcodes = partcodeService.getAllPartcodes();
+        return ResponseEntity.ok(partcodes);
+    }
+
+    // Get all events
+    @GetMapping("/events")
+    public ResponseEntity<List<InventoryEventModel>> getAllEvents() {
+        List<InventoryEventModel> events = inventoryEventService.getAllEvents();
+        return ResponseEntity.ok(events);
+    }
+
+    // Get events by part code
+    @GetMapping("/events/{partCode}")
+    public ResponseEntity<List<InventoryEventModel>> getEventsByPartCode(@PathVariable String partCode) {
+        List<InventoryEventModel> events = inventoryEventService.getEventsByPartCode(partCode);
+        return ResponseEntity.ok(events);
+    }
+
+    // Get low stock alerts
     @GetMapping("/alerts")
-    public ResponseEntity<List<InventoryAlert>> getStockAlerts(@RequestParam(required = false) String companyId) {
-        List<InventoryAlert> alerts = inventoryService.getStockAlerts(companyId);
+    public ResponseEntity<List<Partcode>> getStockAlerts() {
+        List<Partcode> alerts = partcodeService.getLowStockAlerts();
         return ResponseEntity.ok(alerts);
     }
-
-    // Additional CRUD endpoints
-    @GetMapping("/{inventoryId}")
-    public ResponseEntity<Inventory> getInventoryById(@PathVariable String inventoryId) {
-        Inventory inventory = inventoryService.getInventoryById(inventoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found with id: " + inventoryId, ErrorCode.INVENTORY_NOT_FOUND));
-        return ResponseEntity.ok(inventory);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Inventory>> getAllInventories() {
-        List<Inventory> inventories = inventoryService.getAllInventories();
-        return ResponseEntity.ok(inventories);
-    }
-
-    @PutMapping("/{inventoryId}")
-    public ResponseEntity<Inventory> updateInventory(
-            @PathVariable String inventoryId,
-            @RequestBody CreateInventoryRequest request) {
-        Inventory updatedInventory = inventoryService.updateInventory(inventoryId, request)
-                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found with id: " + inventoryId, ErrorCode.INVENTORY_NOT_FOUND));
-        return ResponseEntity.ok(updatedInventory);
-    }
-
-    @DeleteMapping("/{inventoryId}")
-    public ResponseEntity<Void> deleteInventory(@PathVariable String inventoryId) {
-        boolean deleted = inventoryService.deleteInventory(inventoryId);
-        if (!deleted) {
-            throw new ResourceNotFoundException("Inventory not found with id: " + inventoryId, ErrorCode.INVENTORY_NOT_FOUND);
-        }
-        return ResponseEntity.noContent().build();
-    }
 }
-

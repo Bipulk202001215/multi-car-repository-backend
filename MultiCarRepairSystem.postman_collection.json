@@ -243,7 +243,7 @@
 			"name": "Inventory",
 			"item": [
 				{
-					"name": "Create Inventory",
+					"name": "Add Units to Inventory",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -259,21 +259,22 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"partCode\": \"ENG001\",\n  \"name\": \"Engine Oil 5W-30\",\n  \"barCode\": \"1234567890123\",\n  \"category\": \"OEM\",\n  \"hsnCode\": \"27101250\",\n  \"gstSlab\": \"EIGHTEEN_PERCENT\",\n  \"stockQty\": 100,\n  \"minStock\": 20,\n  \"priceTotalUnits\": 5000.00,\n  \"totalUnits\": 10,\n  \"unitsPrice\": 500.00,\n  \"companyId\": \"{{companyId}}\",\n  \"supplierId\": \"{{supplierId}}\"\n}"
+							"raw": "{\n  \"partCode\": \"ENG001\",\n  \"units\": 10,\n  \"unitsPrice\": 500.00\n}"
 						},
 						"url": {
-							"raw": "{{api_base}}/inventory",
+							"raw": "{{api_base}}/inventory/add",
 							"host": [
 								"{{api_base}}"
 							],
 							"path": [
-								"inventory"
+								"inventory",
+								"add"
 							]
 						}
 					}
 				},
 				{
-					"name": "Sell From Inventory",
+					"name": "Sell Units from Inventory",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -289,7 +290,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"items\": [\n    {\n      \"requestedUnits\": 2,\n      \"partCode\": \"ENG001\",\n      \"jobId\": \"{{jobCardId}}\",\n      \"discountRate\": 5.0\n    }\n  ],\n  \"cgst\": 90.00,\n  \"sgst\": 90.00,\n  \"igst\": 0.00,\n  \"paymentMode\": \"UPI\"\n}"
+							"raw": "{\n  \"partCode\": \"ENG001\",\n  \"units\": 2,\n  \"companyId\": \"{{companyId}}\",\n  \"jobId\": \"{{jobCardId}}\"\n}"
 						},
 						"url": {
 							"raw": "{{api_base}}/inventory/sell",
@@ -299,6 +300,100 @@
 							"path": [
 								"inventory",
 								"sell"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Partcode by Part Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base}}/inventory/partcode/ENG001",
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"partcode",
+								"ENG001"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Partcodes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base}}/inventory/partcode",
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"partcode"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base}}/inventory/events",
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"events"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Events by Part Code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base}}/inventory/events/ENG001",
+							"host": [
+								"{{api_base}}"
+							],
+							"path": [
+								"inventory",
+								"events",
+								"ENG001"
 							]
 						}
 					}
@@ -315,119 +410,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{api_base}}/inventory/alerts?companyId={{companyId}}",
+							"raw": "{{api_base}}/inventory/alerts",
 							"host": [
 								"{{api_base}}"
 							],
 							"path": [
 								"inventory",
 								"alerts"
-							],
-							"query": [
-								{
-									"key": "companyId",
-									"value": "{{companyId}}",
-									"disabled": false
-								}
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Inventory by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{api_base}}/inventory/{{inventoryId}}",
-							"host": [
-								"{{api_base}}"
-							],
-							"path": [
-								"inventory",
-								"{{inventoryId}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get All Inventories",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{api_base}}/inventory",
-							"host": [
-								"{{api_base}}"
-							],
-							"path": [
-								"inventory"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Inventory",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"partCode\": \"ENG001\",\n  \"name\": \"Engine Oil 5W-30 Updated\",\n  \"barCode\": \"1234567890123\",\n  \"category\": \"OEM\",\n  \"hsnCode\": \"27101250\",\n  \"gstSlab\": \"EIGHTEEN_PERCENT\",\n  \"stockQty\": 150,\n  \"minStock\": 25,\n  \"priceTotalUnits\": 6000.00,\n  \"totalUnits\": 12,\n  \"unitsPrice\": 500.00,\n  \"companyId\": \"{{companyId}}\",\n  \"supplierId\": \"{{supplierId}}\"\n}"
-						},
-						"url": {
-							"raw": "{{api_base}}/inventory/{{inventoryId}}",
-							"host": [
-								"{{api_base}}"
-							],
-							"path": [
-								"inventory",
-								"{{inventoryId}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Inventory",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwt_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{api_base}}/inventory/{{inventoryId}}",
-							"host": [
-								"{{api_base}}"
-							],
-							"path": [
-								"inventory",
-								"{{inventoryId}}"
 							]
 						}
 					}

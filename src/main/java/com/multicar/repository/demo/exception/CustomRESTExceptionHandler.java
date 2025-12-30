@@ -140,12 +140,28 @@ public class CustomRESTExceptionHandler extends org.springframework.web.servlet.
             return ErrorCode.PASSWORD_REQUIRED;
         }
         
-        // Inventory related
-        if (lowerMessage.contains("inventory not found")) {
-            return ErrorCode.INVENTORY_NOT_FOUND;
+        // Partcode related
+        if (lowerMessage.contains("partcode not found") || lowerMessage.contains("part code not found")) {
+            return ErrorCode.PARTCODE_NOT_FOUND;
+        }
+        if (lowerMessage.contains("units is required") || lowerMessage.contains("units required") || 
+            lowerMessage.contains("units field is missing")) {
+            return ErrorCode.UNITS_REQUIRED;
+        }
+        if (lowerMessage.contains("units_price is required") || lowerMessage.contains("units_price required") || 
+            lowerMessage.contains("units_price field is missing")) {
+            return ErrorCode.UNITS_PRICE_REQUIRED;
+        }
+        if (lowerMessage.contains("partcode is required") || lowerMessage.contains("partcode required") || 
+            lowerMessage.contains("partcode field is missing") || lowerMessage.contains("part_code is required")) {
+            return ErrorCode.PARTCODE_REQUIRED;
         }
         if (lowerMessage.contains("insufficient stock")) {
             return ErrorCode.INSUFFICIENT_STOCK;
+        }
+        // Legacy inventory related (for backward compatibility)
+        if (lowerMessage.contains("inventory not found")) {
+            return ErrorCode.INVENTORY_NOT_FOUND;
         }
         if (lowerMessage.contains("no items provided")) {
             return ErrorCode.NO_ITEMS_PROVIDED;
@@ -202,6 +218,7 @@ public class CustomRESTExceptionHandler extends org.springframework.web.servlet.
         switch (errorCode) {
             case ErrorCode.COMPANY_NOT_FOUND:
             case ErrorCode.USER_NOT_FOUND:
+            case ErrorCode.PARTCODE_NOT_FOUND:
             case ErrorCode.INVENTORY_NOT_FOUND:
             case ErrorCode.JOB_NOT_FOUND:
             case ErrorCode.INVOICE_NOT_FOUND:
@@ -220,6 +237,9 @@ public class CustomRESTExceptionHandler extends org.springframework.web.servlet.
             case ErrorCode.EMAIL_ALREADY_EXISTS:
             case ErrorCode.PASSWORD_REQUIRED:
             case ErrorCode.INSUFFICIENT_STOCK:
+            case ErrorCode.UNITS_REQUIRED:
+            case ErrorCode.UNITS_PRICE_REQUIRED:
+            case ErrorCode.PARTCODE_REQUIRED:
             case ErrorCode.NO_ITEMS_PROVIDED:
             case ErrorCode.USER_ROLE_COMBINATION_EXISTS:
             case ErrorCode.ROLE_PERMISSION_COMBINATION_EXISTS:

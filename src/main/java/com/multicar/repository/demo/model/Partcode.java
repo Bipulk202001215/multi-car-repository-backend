@@ -14,19 +14,13 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SoldInventoryItem {
-    private String soldInventoryId;
-    private String inventoryId;
-    private String jobId;
-    private Integer unitsSold;
+public class Partcode {
+    private String partCode;
     private BigDecimal unitsPrice;
-    private BigDecimal discountedPrice;
-    private BigDecimal sellPrice;
+    private Integer units;
+    private Integer minStockAlert;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }
-
-
-
 
 

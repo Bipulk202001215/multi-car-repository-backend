@@ -1,17 +1,15 @@
 package com.multicar.repository.demo.entity;
 
-import com.multicar.repository.demo.enums.UserRole;
-import com.multicar.repository.demo.generator.RoleIdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "RoleEntity")
+@Table(name = "PARTCODE")
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,17 +17,20 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class RoleEntity {
+public class PartcodeEntity {
     
     @Id
-    @GeneratedValue(generator = "role-id-generator")
-    @GenericGenerator(name = "role-id-generator", type = RoleIdGenerator.class)
-    @Column(name = "ROLEID", length = 50)
-    private String roleId;
+    @Column(name = "part_code", length = 100, nullable = false)
+    private String partCode;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role_name", nullable = false, unique = true)
-    private UserRole roleName;
+    @Column(name = "units_price", precision = 19, scale = 2, nullable = false)
+    private BigDecimal unitsPrice;
+    
+    @Column(name = "units", nullable = false)
+    private Integer units;
+    
+    @Column(name = "min_stock_alert", columnDefinition = "INTEGER DEFAULT 2")
+    private Integer minStockAlert;
     
     @CreationTimestamp
     @Column(name = "created_on", updatable = false)
@@ -39,9 +40,5 @@ public class RoleEntity {
     @Column(name = "updated_on")
     private LocalDateTime updatedOn;
 }
-
-
-
-
 
 

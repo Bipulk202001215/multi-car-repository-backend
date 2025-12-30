@@ -10,9 +10,14 @@ public class ErrorCode {
     public static final String EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS";
     public static final String PASSWORD_REQUIRED = "PASSWORD_REQUIRED";
     
-    // Inventory related errors
-    public static final String INVENTORY_NOT_FOUND = "INVENTORY_NOT_FOUND";
+    // Partcode related errors
+    public static final String PARTCODE_NOT_FOUND = "PARTCODE_NOT_FOUND";
     public static final String INSUFFICIENT_STOCK = "INSUFFICIENT_STOCK";
+    public static final String UNITS_REQUIRED = "UNITS_REQUIRED";
+    public static final String UNITS_PRICE_REQUIRED = "UNITS_PRICE_REQUIRED";
+    public static final String PARTCODE_REQUIRED = "PARTCODE_REQUIRED";
+    // Legacy inventory error (for backward compatibility during migration)
+    public static final String INVENTORY_NOT_FOUND = "INVENTORY_NOT_FOUND";
     public static final String NO_ITEMS_PROVIDED = "NO_ITEMS_PROVIDED";
     
     // Job related errors

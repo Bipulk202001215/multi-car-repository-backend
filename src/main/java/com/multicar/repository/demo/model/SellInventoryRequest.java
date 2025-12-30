@@ -3,8 +3,6 @@ package com.multicar.repository.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,17 +11,11 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserRole {
-    
-    private String userRoleId;
-    private User userId;
-    private Role roleId;
-    private LocalDateTime createdOn;
-    private LocalDateTime updatedOn;
+public class SellInventoryRequest {
+    private String partCode; // MANDATORY
+    private Integer units; // MANDATORY
+    private String companyId; // Required for SELL
+    private String jobId; // Required for SELL
 }
-
-
-
-
 
 

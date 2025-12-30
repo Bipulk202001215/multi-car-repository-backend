@@ -1,12 +1,12 @@
 package com.multicar.repository.demo.enums;
 
-public enum PaymentStatus {
-    PENDING("Payment is pending"),
-    COMPLETED("Payment has been completed");
+public enum InventoryEvent {
+    ADD("Add units to inventory"),
+    SELL("Sell units from inventory");
 
     private final String description;
 
-    PaymentStatus(String description) {
+    InventoryEvent(String description) {
         this.description = description;
     }
 
@@ -14,9 +14,5 @@ public enum PaymentStatus {
         return description;
     }
 }
-
-
-
-
 
 
