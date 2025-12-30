@@ -213,3 +213,5 @@ curl -X POST http://localhost:8080/api/jobs \
 4. **Authentication**: Include JWT token in Authorization header for authenticated requests.
 5. **Response**: Returns created JobCard object with generated jobCardId and jobDetailId.
 
+
+

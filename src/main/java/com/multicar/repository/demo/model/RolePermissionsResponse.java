@@ -18,3 +18,5 @@ public class RolePermissionsResponse {
     private List<PermissionInfo> permissions;
 }
 
+
+

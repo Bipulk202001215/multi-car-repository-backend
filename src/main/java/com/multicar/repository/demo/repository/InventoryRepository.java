@@ -29,3 +29,5 @@ public interface InventoryRepository extends JpaRepository<InventoryEntity, Stri
 
 
 
+
+

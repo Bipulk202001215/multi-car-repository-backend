@@ -31,7 +31,7 @@ docker rm -f backend frontend 2>/dev/null
 # PULL IMAGES
 # =========================
 docker pull $BACKEND_IMAGE
-docker pull $FRONTEND_IMAGE
+#docker pull $FRONTEND_IMAGE
 
 # =========================
 # RUN BACKEND
@@ -45,12 +45,12 @@ docker run -d \
 # =========================
 # RUN FRONTEND
 # =========================
-docker run -d \
-  --name frontend \
-  --network $NETWORK \
-  -p 3001:3001 \
-  -e VITE_API_BASE_URL=http://localhost:8080 \
-  $FRONTEND_IMAGE
+# docker run -d \
+#   --name frontend \
+#   --network $NETWORK \
+#   -p 3001:3001 \
+#   -e VITE_API_BASE_URL=http://localhost:8080 \
+#   $FRONTEND_IMAGE
 
-echo "✅ Frontend: http://localhost:3001"
+#echo "✅ Frontend: http://localhost:3001"
 echo "✅ Backend : http://localhost:8080"
