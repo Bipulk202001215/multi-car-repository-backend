@@ -153,3 +153,4 @@ curl -v -X POST http://localhost:8080/api/inventory/add \
 - `minStockAlert` defaults to 2 if not specified
 
 
+

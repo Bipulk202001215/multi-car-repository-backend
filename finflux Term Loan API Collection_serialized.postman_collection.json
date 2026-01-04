@@ -1,0 +1,1668 @@
+{
+    "info": {
+        "_postman_id": "687ddb9d-cd0d-4391-9cfd-89f14e23a898",
+        "name": "finflux Term Loan API Collection",
+        "description": "Collection of APIs for VOLT Term Loan operations including credit line management, EMI operations, and loan details",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "48739730",
+        "_collection_link": "https://fenix-team-8852.postman.co/workspace/My-Workspace~eb808e3a-f3a0-499e-8aba-7c60c580c7bd/collection/37292788-687ddb9d-cd0d-4391-9cfd-89f14e23a898?action=share&source=collection_link&creator=48739730"
+    },
+    "item": [
+        {
+            "name": "Create and Activate Credit Line",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"productShortName\": \"LASTL\",\n  \"externalIdOne\": \"asfbjsbab2485567645\",\n  \"allowedLimit\": 0,\n  \"billDayRecurrenceType\": \"CUSTOM\",\n  \"billDayRecurrenceRule\": {\n    \"repeatsOnDayOfMonth\": [\n      5\n    ],\n    \"repeatsOnNthDayOfMonth\": -2,\n    \"frequencyType\": \"MONTHLY\",\n    \"interval\": 1\n  },\n  \"dueDetails\": {\n    \"type\": \"RELATIVE_TO_BILL_DAY\",\n    \"day\": 0\n  },\n  \"sanctionLimit\": 1200000,\n  \"lineExpiryDetails\": {\n    \"expiryType\": \"EXPIRY_DATE\",\n    \"dateOfExpiry\": {\n      \"expectedDateOfExpiry\": 1817971466000\n    }\n  },\n  \"submittedOn\": 1752480162000\n//   \"interestRateType\": \"FLOATING\",\n//   \"floatingRateId\": 3,\n//   \"interestRateDifferential\": 2\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v3/customers/000001084/revolving-credit-lines/createAndActivate",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v3",
+                        "customers",
+                        "000001084",
+                        "revolving-credit-lines",
+                        "createAndActivate"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "EMI Preview",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-security-policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"transactionAmount\": 5000,\n  \"interestRatePerPeriod\": \"10\",\n  \"numberOfRepayments\": 3\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000007917/transactions/emi-preview-schedule",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000007917",
+                        "transactions",
+                        "emi-preview-schedule"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Flexi Pay (Spend and Convert)",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "2t3xcOZKCb9jC6QeTlQO6yzESSc",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-security-policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"amount\": 1000,\n  \"notes\": \"create transaction\",\n  \"transactionTime\": 1766406247000,\n  \"emiConversionDetails\": {\n    \"interestRatePerPeriod\": \"10.49\",\n    \"numberOfRepayments\": 12,\n    \"productShortName\": \"TLMD\"\n  },\n  \"paymentDetails\": {\n    \"paymentType\": \"Online Transfer\",\n    \"referenceNumber\": \"1263872326482940\"\n  },\n  \"charges\": [\n    {\n      \"chargeIdentifier\": \"PFT\",\n      \"amount\": 100\n    }\n  ]\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000011197/transactions/flexi-pay",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000011197",
+                        "transactions",
+                        "flexi-pay"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Flexi Pay (Spend and Convert)",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "accept",
+                                "value": "application/json, text/plain, */*",
+                                "type": "text"
+                            },
+                            {
+                                "key": "accept-language",
+                                "value": "en-US,en;q=0.9",
+                                "type": "text"
+                            },
+                            {
+                                "key": "authorization",
+                                "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                                "type": "text"
+                            },
+                            {
+                                "key": "content-security-policy",
+                                "value": "default-src 'self'",
+                                "type": "text"
+                            },
+                            {
+                                "key": "content-type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"amount\": 5000,\n  \"notes\": \"adarsh\",\n  \"transactionDate\": \"2025-07-18\",\n  \"emiConversionDetails\": {\n    \"numberOfRepayments\": 6,\n    \"interestRatePerPeriod\": \"10\",\n    \"productShortName\": \"TLMD\"\n  },\n  \"paymentDetails\": {\n    \"paymentType\": \"online transfer\",\n    \"referenceNumber\": \"adarsh\"\n  }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000007917/transactions/flexi-pay",
+                            "protocol": "https",
+                            "host": [
+                                "uat-voltmoney",
+                                "finfluxtrial",
+                                "io"
+                            ],
+                            "path": [
+                                "fineract-provider",
+                                "api",
+                                "v1",
+                                "revolving-credit-lines",
+                                "000007917",
+                                "transactions",
+                                "flexi-pay"
+                            ]
+                        }
+                    },
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "description": "",
+                            "type": "text"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"transactionId\": \"7f5cfcbf-19fc-4800-af2e-f7b90915b2c7\",\n    \"emiConversionId\": \"a97b5f1f-9e19-44dc-a83b-b13a4f723d2c\",\n    \"accountNumber\": \"000008036\",\n    \"amount\": 5000,\n    \"transactionTime\": 1752863399999,\n    \"processingStatus\": \"SUCCESS\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "Flexi Pay - Loan to Tranche",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "YEDsVWZe2PfXj_pEH0XS2Gfx6rk",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-security-policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000001084/transactions/flexi-pay",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000001084",
+                        "transactions",
+                        "flexi-pay"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Flexi Pay (Spend and Convert)",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "accept",
+                                "value": "application/json, text/plain, */*",
+                                "type": "text"
+                            },
+                            {
+                                "key": "accept-language",
+                                "value": "en-US,en;q=0.9",
+                                "type": "text"
+                            },
+                            {
+                                "key": "authorization",
+                                "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                                "type": "text"
+                            },
+                            {
+                                "key": "content-security-policy",
+                                "value": "default-src 'self'",
+                                "type": "text"
+                            },
+                            {
+                                "key": "content-type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"amount\": 5000,\n  \"notes\": \"adarsh\",\n  \"transactionDate\": \"2025-07-18\",\n  \"emiConversionDetails\": {\n    \"numberOfRepayments\": 6,\n    \"interestRatePerPeriod\": \"10\",\n    \"productShortName\": \"TLMD\"\n  },\n  \"paymentDetails\": {\n    \"paymentType\": \"online transfer\",\n    \"referenceNumber\": \"adarsh\"\n  }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000007917/transactions/flexi-pay",
+                            "protocol": "https",
+                            "host": [
+                                "uat-voltmoney",
+                                "finfluxtrial",
+                                "io"
+                            ],
+                            "path": [
+                                "fineract-provider",
+                                "api",
+                                "v1",
+                                "revolving-credit-lines",
+                                "000007917",
+                                "transactions",
+                                "flexi-pay"
+                            ]
+                        }
+                    },
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "description": "",
+                            "type": "text"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"transactionId\": \"7f5cfcbf-19fc-4800-af2e-f7b90915b2c7\",\n    \"emiConversionId\": \"a97b5f1f-9e19-44dc-a83b-b13a4f723d2c\",\n    \"accountNumber\": \"000008036\",\n    \"amount\": 5000,\n    \"transactionTime\": 1752863399999,\n    \"processingStatus\": \"SUCCESS\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "Approve Transaction",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "2t3xcOZKCb9jC6QeTlQO6yzESSc",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-security-policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000011073/transactions/aea670e7-aea6-4aa5-a5b6-4c1c121bdf9d/approve",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000011073",
+                        "transactions",
+                        "aea670e7-aea6-4aa5-a5b6-4c1c121bdf9d",
+                        "approve"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Reject Transaction",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "YEDsVWZe2PfXj_pEH0XS2Gfx6rk",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-security-policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000009355/transactions/1670dc26-696e-4b76-b947-62efec2fe696/approve",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000009355",
+                        "transactions",
+                        "1670dc26-696e-4b76-b947-62efec2fe696",
+                        "approve"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "EMI Payment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"amount\": 35,\n    \"emiDetails\": [\n        {\n            \"amount\": 35,\n            \"emiTransactionId\": \"706755f3-7edc-46a9-bab5-f6021baeb150\"\n        }\n    ],\n    \"notes\": \"Repayment received for tranche account number: FXTLAN516715575 with Ref ID: 5114923405118\",\n    \"paymentDetails\": {\n        \"referenceNumber\": \"1766435562000\"\n    },\n    \"transactionTime\": 1766435677000\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v3/revolving-credit-lines/000010770/transactions/payin",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v3",
+                        "revolving-credit-lines",
+                        "000010770",
+                        "transactions",
+                        "payin"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Line Level Payment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"amount\": 8037.26,\n    \"transactionTime\": 1764817947000,\n    \"paymentDetails\": {\n        \"paymentType\": \"Online Transfer\",\n        \"referenceNumber\": \"7023178060\"\n    }\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000011073/transactions/payin",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000011073",
+                        "transactions",
+                        "payin"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Tranche Level Payment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"amount\": 8037.26,\n    \"transactionTime\": 1764817947000,\n    \"paymentDetails\": {\n        \"paymentType\": \"Online Transfer\",\n        \"referenceNumber\": \"7023178060\"\n    }\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000011073/transactions/payin",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000011073",
+                        "transactions",
+                        "payin"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Pay from Excess",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"amount\" : 8,\n    \"emiDetails\": [\n        {\n            \"emiTransactionId\": \"1670dc26-696e-4b76-b947-62efec2fe696\",\n            \"amount\": 8\n        }\n    ],\n    \"transactionTime\" : 1757496452000\n}\n",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000009355/transactions/excess-part-payment",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000009355",
+                        "transactions",
+                        "excess-part-payment"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Loan Details by Client ID",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/clients/00001252/accounts-overview",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "clients",
+                        "00001252",
+                        "accounts-overview"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Line Overdue Details",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000009713/bill-overdues",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000009713",
+                        "bill-overdues"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Line Excess Money Split",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v2/runreports/excess_api/flatdata?R_account_number=000010073",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v2",
+                        "runreports",
+                        "excess_api",
+                        "flatdata"
+                    ],
+                    "query": [
+                        {
+                            "key": "R_account_number",
+                            "value": "000010073"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Generate Bill",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\n\"accountNumber\":\"000009329\",\n\"billDate\":\"2025-08-05\",\n\"billDateFormat\":\"yyyy-MM-dd\"\n\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/bill",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "bill"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Loan Details by Account Number",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/loans/00000055",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "loans",
+                        "00000055"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "RPS API (Repayment Schedule)",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept-Language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Connection",
+                        "value": "keep-alive",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Content-Security-Policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/loans/55?associations=repaymentSchedule",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "loans",
+                        "55"
+                    ],
+                    "query": [
+                        {
+                            "key": "associations",
+                            "value": "repaymentSchedule"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Loan Foreclosure Template",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines-template/000007917/foreclosure/48941629-a945-48aa-8923-daf2f504aa55",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines-template",
+                        "000007917",
+                        "foreclosure",
+                        "48941629-a945-48aa-8923-daf2f504aa55"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Loan Foreclosure",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*",
+                        "type": "text"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9",
+                        "type": "text"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-security-policy",
+                        "value": "default-src 'self'",
+                        "type": "text"
+                    },
+                    {
+                        "key": "content-type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"notes\": \"Test\",\n  \"transactionTime\": null,\n  \"transactionDate\": \"2025-07-19\",\n  \"paymentDetails\": {\n    \"paymentType\": \"online transfer\"\n  },\n  \"chargeDiscountDetails\": []\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000007917/transactions/48941629-a945-48aa-8923-daf2f504aa55/foreclosure",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000007917",
+                        "transactions",
+                        "48941629-a945-48aa-8923-daf2f504aa55",
+                        "foreclosure"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Loan Foreclosure",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "accept",
+                                "value": "application/json, text/plain, */*",
+                                "type": "text"
+                            },
+                            {
+                                "key": "accept-language",
+                                "value": "en-US,en;q=0.9",
+                                "type": "text"
+                            },
+                            {
+                                "key": "authorization",
+                                "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                                "type": "text"
+                            },
+                            {
+                                "key": "content-security-policy",
+                                "value": "default-src 'self'",
+                                "type": "text"
+                            },
+                            {
+                                "key": "content-type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"notes\": \"Test\",\n  \"transactionTime\": null,\n  \"transactionDate\": \"2025-07-19\",\n  \"paymentDetails\": {\n    \"paymentType\": \"online transfer\"\n  },\n  \"chargeDiscountDetails\": []\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000007917/transactions/48941629-a945-48aa-8923-daf2f504aa55/foreclosure",
+                            "protocol": "https",
+                            "host": [
+                                "uat-voltmoney",
+                                "finfluxtrial",
+                                "io"
+                            ],
+                            "path": [
+                                "fineract-provider",
+                                "api",
+                                "v1",
+                                "revolving-credit-lines",
+                                "000007917",
+                                "transactions",
+                                "48941629-a945-48aa-8923-daf2f504aa55",
+                                "foreclosure"
+                            ]
+                        }
+                    },
+                    "_postman_previewlanguage": "json",
+                    "header": [
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "description": "",
+                            "type": "text"
+                        }
+                    ],
+                    "cookie": [],
+                    "body": "{\n    \"transactionId\": \"50716e2d-8e77-4daa-94c1-6e743f47044e\",\n    \"accountNumber\": \"000008036\",\n    \"amount\": 5001.37,\n    \"tags\": [],\n    \"transactionTime\": 1752949799999,\n    \"transactionAdditionalDetails\": {},\n    \"paymentDetails\": {\n        \"paymentType\": \"online transfer\"\n    },\n    \"originalTransactionIdentifier\": \"7f5cfcbf-19fc-4800-af2e-f7b90915b2c7\",\n    \"creditLineForeclosureData\": {\n        \"loanId\": 83,\n        \"loanForeclosureAmountComponents\": {\n            \"principal\": 5000,\n            \"principalOverdue\": 0,\n            \"principalDue\": 0,\n            \"interestOverdue\": 0,\n            \"brokenPeriodInterest\": 1.37,\n            \"interestDue\": 0,\n            \"remainingBrokenPeriodInterest\": 0\n        },\n        \"outstandingPrincipalPortion\": 5000,\n        \"outstandingInterestPortion\": 1.37,\n        \"transactionTime\": 1752949799999\n    },\n    \"subLimitDetails\": [],\n    \"isOriginalTransactionConvertedToEmi\": false,\n    \"isCreditLineTransaction\": true,\n    \"processingStatus\": \"SUCCESS\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "add pledge",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"assetType\": \"security\",\n    \"assets\": [\n        {\n            \"amfiCode\" : 103309,  \n            \"quantity\" : 140.847,\n            \"folioNumber\" : 1041756828,\n            \"emailId\" : \"bratatimandal31@gmail.com\",\n            \"isin\" : \"INF209K01462\",\n            \"securityType\" : \"EQUITY\",\n            \"lienRefNumber\" : \"481625\",\n            \"lienMarkingNumber\": \"411066\",\n            \"requestRefNumber\": \"RCRID6142284245\",\n            \"mobileNumber\" : \"9051235233\",\n            \"modeOfHolding\" : \"SINGLE_HOLDING\"\n        }\n    ]\n}\n\n",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/account/000008091/assets/add-pledge",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "account",
+                        "000008091",
+                        "assets",
+                        "add-pledge"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Partpayment from Excess",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer LsPGkesUnIooaqpMBVr8FB05igo",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"assetType\": \"security\",\n    \"assets\": [\n        {\n            \"amfiCode\" : 103309,  \n            \"quantity\" : 140.847,\n            \"folioNumber\" : 1041756828,\n            \"emailId\" : \"bratatimandal31@gmail.com\",\n            \"isin\" : \"INF209K01462\",\n            \"securityType\" : \"EQUITY\",\n            \"lienRefNumber\" : \"481625\",\n            \"lienMarkingNumber\": \"411066\",\n            \"requestRefNumber\": \"RCRID6142284245\",\n            \"mobileNumber\" : \"9051235233\",\n            \"modeOfHolding\" : \"SINGLE_HOLDING\"\n        }\n    ]\n}\n\n",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/account/000008091/assets/add-pledge",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "account",
+                        "000008091",
+                        "assets",
+                        "add-pledge"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "EMI Payment status",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": ""
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Initiate_Asynch_process_for_Line",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000009992/transactions/async-process",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000009992",
+                        "transactions",
+                        "async-process"
+                    ]
+                },
+                "description": "Generated from cURL: curl --location --request POST 'https://uat-voltmoney.finfluxtrial.io//fineract-provider/api/v1/revolving-credit-lines/000009692/transactions/async-process' \\\n--header 'Authorization: Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc'"
+            },
+            "response": []
+        },
+        {
+            "name": "due generation",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000009974/transactions/async-process",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000009974",
+                        "transactions",
+                        "async-process"
+                    ]
+                },
+                "description": "Generated from cURL: curl --location --request POST 'https://uat-voltmoney.finfluxtrial.io//fineract-provider/api/v1/revolving-credit-lines/000009692/transactions/async-process' \\\n--header 'Authorization: Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc'"
+            },
+            "response": []
+        },
+        {
+            "name": "mandate due report",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc"
+                    },
+                    {
+                        "key": "sec-ch-ua",
+                        "value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+                    },
+                    {
+                        "key": "sec-ch-ua-mobile",
+                        "value": "?0"
+                    },
+                    {
+                        "key": "sec-ch-ua-platform",
+                        "value": "\"Windows\""
+                    },
+                    {
+                        "key": "sec-fetch-dest",
+                        "value": "empty"
+                    },
+                    {
+                        "key": "sec-fetch-mode",
+                        "value": "cors"
+                    },
+                    {
+                        "key": "sec-fetch-site",
+                        "value": "same-origin"
+                    },
+                    {
+                        "key": "user-agent",
+                        "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v2/runreports/creditline_tl_account_summary_stretchy_report/flatdata",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v2",
+                        "runreports",
+                        "creditline_tl_account_summary_stretchy_report",
+                        "flatdata"
+                    ]
+                },
+                "description": "Generated from cURL: curl --location --request POST 'https://uat-voltmoney.finfluxtrial.io//fineract-provider/api/v1/revolving-credit-lines/000009692/transactions/async-process' \\\n--header 'Authorization: Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc'"
+            },
+            "response": []
+        },
+        {
+            "name": "loan repayment schedule report",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc"
+                    },
+                    {
+                        "key": "sec-ch-ua",
+                        "value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+                    },
+                    {
+                        "key": "sec-ch-ua-mobile",
+                        "value": "?0"
+                    },
+                    {
+                        "key": "sec-ch-ua-platform",
+                        "value": "\"Windows\""
+                    },
+                    {
+                        "key": "sec-fetch-dest",
+                        "value": "empty"
+                    },
+                    {
+                        "key": "sec-fetch-mode",
+                        "value": "cors"
+                    },
+                    {
+                        "key": "sec-fetch-site",
+                        "value": "same-origin"
+                    },
+                    {
+                        "key": "user-agent",
+                        "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v2/runreports/creditline_tl_account_repayment_schedule_report/flatdata?R_accountId=000010741",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v2",
+                        "runreports",
+                        "creditline_tl_account_repayment_schedule_report",
+                        "flatdata"
+                    ],
+                    "query": [
+                        {
+                            "key": "R_accountId",
+                            "value": "000010741"
+                        }
+                    ]
+                },
+                "description": "Generated from cURL: curl --location --request POST 'https://uat-voltmoney.finfluxtrial.io//fineract-provider/api/v1/revolving-credit-lines/000009692/transactions/async-process' \\\n--header 'Authorization: Bearer 2t3xcOZKCb9jC6QeTlQO6yzESSc'"
+            },
+            "response": []
+        },
+        {
+            "name": "Trans on Tranche",
+            "request": {
+                "method": "GET",
+                "header": []
+            },
+            "response": []
+        },
+        {
+            "name": "New Request",
+            "request": {
+                "method": "GET",
+                "header": []
+            },
+            "response": []
+        },
+        {
+            "name": "transaction status",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000000049/transactions/670c40b1-dacb-4199-902f-b5857ae889f1",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000000049",
+                        "transactions",
+                        "670c40b1-dacb-4199-902f-b5857ae889f1"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "close Tranche",
+            "request": {
+                "method": "GET",
+                "header": []
+            },
+            "response": []
+        },
+        {
+            "name": "loan to tranche tagged excess",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "accept",
+                        "value": "application/json, text/plain, */*"
+                    },
+                    {
+                        "key": "accept-language",
+                        "value": "en-US,en;q=0.9"
+                    },
+                    {
+                        "key": "authorization",
+                        "value": "Bearer UKWUqyk"
+                    }
+                ],
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v2/runreports/excess_api/flatdata?R_account_number=000010956",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v2",
+                        "runreports",
+                        "excess_api",
+                        "flatdata"
+                    ],
+                    "query": [
+                        {
+                            "key": "R_account_number",
+                            "value": "000010956"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "post from loan excess to tranche due - due Amount settle",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer UKWUq5YNYyk"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"notes\": \"Repayment Request Received for Tranche from Excess : FXTLAN2658725\",\n    \"emiDetail\": [\n        {\n            \"emiTransactionId\": \"489aa6c4-126e-46f8-817a-f1022c498b63\",\n            \"amount\": 100.00\n        }\n    ],\n    \"transactionTime\": 1765284938000\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api/v1/revolving-credit-lines/000010965/transactions/emi-payment/excess",
+                    "protocol": "https",
+                    "host": [
+                        "uat-voltmoney",
+                        "finfluxtrial",
+                        "io"
+                    ],
+                    "path": [
+                        "fineract-provider",
+                        "api",
+                        "v1",
+                        "revolving-credit-lines",
+                        "000010965",
+                        "transactions",
+                        "emi-payment",
+                        "excess"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Part payment",
+            "request": {
+                "method": "GET",
+                "header": []
+            },
+            "response": []
+        },
+        {
+            "name": "get eXCESS Stretchy Report",
+            "request": {
+                "method": "GET",
+                "header": []
+            },
+            "response": []
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "NsRq-TpeOBT2zZMDsYxrDyX22Bk",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "https://uat-voltmoney.finfluxtrial.io/fineract-provider/api"
+        },
+        {
+            "key": "bearerToken",
+            "value": "LsPGkesUnIooaqpMBVr8FB05igo"
+        }
+    ]
+}

@@ -32,17 +32,11 @@ public class InvoiceEntity {
     @Column(name = "job_id", nullable = false)
     private String jobId;
     
+    @Column(name = "company_id", length = 50)
+    private String companyId;
+    
     @Column(name = "subtotal", precision = 19, scale = 2, nullable = false)
     private BigDecimal subtotal;
-    
-    @Column(name = "cgst", precision = 19, scale = 2)
-    private BigDecimal cgst;
-    
-    @Column(name = "sgst", precision = 19, scale = 2)
-    private BigDecimal sgst;
-    
-    @Column(name = "igst", precision = 19, scale = 2)
-    private BigDecimal igst;
     
     @Column(name = "total", precision = 19, scale = 2, nullable = false)
     private BigDecimal total;
@@ -63,6 +57,7 @@ public class InvoiceEntity {
     @Column(name = "updated_on")
     private LocalDateTime updatedOn;
 }
+
 
 
 

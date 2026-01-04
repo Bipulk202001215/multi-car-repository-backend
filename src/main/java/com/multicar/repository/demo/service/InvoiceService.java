@@ -2,10 +2,16 @@ package com.multicar.repository.demo.service;
 
 import com.multicar.repository.demo.entity.InvoiceEntity;
 import com.multicar.repository.demo.entity.JobCardEntity;
+import com.multicar.repository.demo.enums.InventoryEvent;
 import com.multicar.repository.demo.enums.PaymentMode;
 import com.multicar.repository.demo.enums.PaymentStatus;
+import com.multicar.repository.demo.exception.ErrorCode;
+import com.multicar.repository.demo.exception.ResourceNotFoundException;
 import com.multicar.repository.demo.model.CreateInvoiceRequest;
 import com.multicar.repository.demo.model.Invoice;
+import com.multicar.repository.demo.model.InvoiceItem;
+import com.multicar.repository.demo.model.Partcode;
+import com.multicar.repository.demo.model.SellInventoryRequest;
 import com.multicar.repository.demo.repository.InvoiceRepository;
 import com.multicar.repository.demo.repository.JobCardRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,23 +30,49 @@ public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
     private final JobCardRepository jobCardRepository;
+    private final PartcodeService partcodeService;
+    private final InventoryEventService inventoryEventService;
 
     public Invoice createInvoice(CreateInvoiceRequest request) {
+        // Create SELL events for each item in the list
+        if (request.getItems() != null && !request.getItems().isEmpty()) {
+            for (InvoiceItem item : request.getItems()) {
+                SellInventoryRequest sellRequest = SellInventoryRequest.builder()
+                        .partCode(item.getPartCode())
+                        .units(item.getUnits())
+                        .companyId(request.getCompanyId())
+                        .jobId(request.getJobId())
+                        .build();
+                
+                // Create SELL event (this will also update partcode units)
+                partcodeService.sellUnits(sellRequest);
+            }
+        }
+        
+        // Calculate subtotal: sum of (unitsPrice * units) for each item
+        BigDecimal subtotal = BigDecimal.ZERO;
+        if (request.getItems() != null && !request.getItems().isEmpty()) {
+            for (InvoiceItem item : request.getItems()) {
+                Partcode partcode = partcodeService.getPartcodeByPartCode(item.getPartCode())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Partcode not found with part code: " + item.getPartCode(),
+                                ErrorCode.PARTCODE_NOT_FOUND));
+                
+                BigDecimal itemPrice = partcode.getUnitsPrice().multiply(BigDecimal.valueOf(item.getUnits()));
+                subtotal = subtotal.add(itemPrice);
+            }
+        }
+
         // Calculate total = subtotal + cgst + sgst + igst
-        BigDecimal cgst = request.getCgst() != null ? request.getCgst() : BigDecimal.ZERO;
-        BigDecimal sgst = request.getSgst() != null ? request.getSgst() : BigDecimal.ZERO;
-        BigDecimal igst = request.getIgst() != null ? request.getIgst() : BigDecimal.ZERO;
-        BigDecimal total = request.getSubtotal()
-                .add(cgst)
-                .add(sgst)
-                .add(igst);
+        BigDecimal cgst = BigDecimal.valueOf(9);
+        BigDecimal sgst = BigDecimal.valueOf(9);
+        BigDecimal igst = BigDecimal.valueOf(9);
+        BigDecimal total = subtotal.add(cgst).add(sgst).add(igst);
 
         InvoiceEntity entity = InvoiceEntity.builder()
                 .jobId(request.getJobId())
-                .subtotal(request.getSubtotal())
-                .cgst(cgst)
-                .sgst(sgst)
-                .igst(igst)
+                .companyId(request.getCompanyId())
+                .subtotal(subtotal)
                 .total(total)
                 .paymentStatus(request.getPaymentStatus() != null ? request.getPaymentStatus() : PaymentStatus.PENDING)
                 .paymentMode(request.getPaymentMode())
@@ -73,21 +105,32 @@ public class InvoiceService {
         return invoiceRepository.findByInvoiceId(invoiceId)
                 .map(existingEntity -> {
                     existingEntity.setJobId(request.getJobId());
-                    existingEntity.setSubtotal(request.getSubtotal());
+                    if (request.getCompanyId() != null) {
+                        existingEntity.setCompanyId(request.getCompanyId());
+                    }
                     
-                    BigDecimal cgst = request.getCgst() != null ? request.getCgst() : BigDecimal.ZERO;
-                    BigDecimal sgst = request.getSgst() != null ? request.getSgst() : BigDecimal.ZERO;
-                    BigDecimal igst = request.getIgst() != null ? request.getIgst() : BigDecimal.ZERO;
+                    // Calculate subtotal: sum of (unitsPrice * units) for each item
+                    BigDecimal subtotal = BigDecimal.ZERO;
+                    if (request.getItems() != null && !request.getItems().isEmpty()) {
+                        for (InvoiceItem item : request.getItems()) {
+                            Partcode partcode = partcodeService.getPartcodeByPartCode(item.getPartCode())
+                                    .orElseThrow(() -> new ResourceNotFoundException(
+                                            "Partcode not found with part code: " + item.getPartCode(),
+                                            ErrorCode.PARTCODE_NOT_FOUND));
+                            
+                            BigDecimal itemPrice = partcode.getUnitsPrice().multiply(BigDecimal.valueOf(item.getUnits()));
+                            subtotal = subtotal.add(itemPrice);
+                        }
+                    }
+                    existingEntity.setSubtotal(subtotal);
                     
-                    existingEntity.setCgst(cgst);
-                    existingEntity.setSgst(sgst);
-                    existingEntity.setIgst(igst);
+                    // Fixed values for GST
+                    BigDecimal cgst = BigDecimal.valueOf(9);
+                    BigDecimal sgst = BigDecimal.valueOf(9);
+                    BigDecimal igst = BigDecimal.valueOf(9);
                     
                     // Recalculate total
-                    BigDecimal total = request.getSubtotal()
-                            .add(cgst)
-                            .add(sgst)
-                            .add(igst);
+                    BigDecimal total = subtotal.add(cgst).add(sgst).add(igst);
                     existingEntity.setTotal(total);
                     
                     if (request.getPaymentStatus() != null) {
@@ -142,21 +185,38 @@ public class InvoiceService {
     }
 
     private Invoice convertToModel(InvoiceEntity entity) {
+        // Fetch SELL events for this jobId and convert to items
+        List<InvoiceItem> items = inventoryEventService.getEventsByJobId(entity.getJobId()).stream()
+                .filter(event -> event.getEvent() == InventoryEvent.SELL) // Only SELL events
+                .map(event -> InvoiceItem.builder()
+                        .partCode(event.getPartCode())
+                        .units(event.getUnits())
+                        .build())
+                .collect(Collectors.toList());
+        
+        // Fixed values for GST
+        BigDecimal cgst = BigDecimal.valueOf(9);
+        BigDecimal sgst = BigDecimal.valueOf(9);
+        BigDecimal igst = BigDecimal.valueOf(9);
+        
         return Invoice.builder()
                 .invoiceId(entity.getInvoiceId())
                 .jobId(entity.getJobId())
+                .companyId(entity.getCompanyId())
                 .subtotal(entity.getSubtotal())
-                .cgst(entity.getCgst())
-                .sgst(entity.getSgst())
-                .igst(entity.getIgst())
+                .cgst(cgst)
+                .sgst(sgst)
+                .igst(igst)
                 .total(entity.getTotal())
                 .paymentStatus(entity.getPaymentStatus())
                 .paymentMode(entity.getPaymentMode())
+                .items(items)
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
     }
 }
+
 
 
 

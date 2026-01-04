@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 public class Invoice {
     private String invoiceId;
     private String jobId;
+    private String companyId;
     private BigDecimal subtotal;
     private BigDecimal cgst;
     private BigDecimal sgst;
@@ -26,9 +28,11 @@ public class Invoice {
     private BigDecimal total;
     private PaymentStatus paymentStatus;
     private PaymentMode paymentMode;
+    private List<InvoiceItem> items; // Items (partCode and units) from SELL events
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }
+
 
 
 

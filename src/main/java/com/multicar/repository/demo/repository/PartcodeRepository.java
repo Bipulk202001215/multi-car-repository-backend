@@ -18,3 +18,4 @@ public interface PartcodeRepository extends JpaRepository<PartcodeEntity, String
 }
 
 
+

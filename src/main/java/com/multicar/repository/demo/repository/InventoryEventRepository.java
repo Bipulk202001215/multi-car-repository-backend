@@ -17,3 +17,4 @@ public interface InventoryEventRepository extends JpaRepository<InventoryEventEn
 }
 
 
+
