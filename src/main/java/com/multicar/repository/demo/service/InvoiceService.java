@@ -97,7 +97,7 @@ public class InvoiceService {
 
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll().stream()
-                .map(this::convertToModel)
+                .map(this::convertToModelWithoutItems)
                 .collect(Collectors.toList());
     }
 
@@ -162,13 +162,13 @@ public class InvoiceService {
 
     public List<Invoice> getInvoicesByJobId(String jobId) {
         return invoiceRepository.findByJobId(jobId).stream()
-                .map(this::convertToModel)
+                .map(this::convertToModelWithoutItems)
                 .collect(Collectors.toList());
     }
 
     public List<Invoice> getInvoicesByPaymentStatus(PaymentStatus paymentStatus) {
         return invoiceRepository.findByPaymentStatus(paymentStatus).stream()
-                .map(this::convertToModel)
+                .map(this::convertToModelWithoutItems)
                 .collect(Collectors.toList());
     }
 
@@ -182,6 +182,29 @@ public class InvoiceService {
                     InvoiceEntity updatedEntity = invoiceRepository.save(existingEntity);
                     return convertToModel(updatedEntity);
                 });
+    }
+
+    private Invoice convertToModelWithoutItems(InvoiceEntity entity) {
+        // Fixed values for GST
+        BigDecimal cgst = BigDecimal.valueOf(9);
+        BigDecimal sgst = BigDecimal.valueOf(9);
+        BigDecimal igst = BigDecimal.valueOf(9);
+        
+        return Invoice.builder()
+                .invoiceId(entity.getInvoiceId())
+                .jobId(entity.getJobId())
+                .companyId(entity.getCompanyId())
+                .subtotal(entity.getSubtotal())
+                .cgst(cgst)
+                .sgst(sgst)
+                .igst(igst)
+                .total(entity.getTotal())
+                .paymentStatus(entity.getPaymentStatus())
+                .paymentMode(entity.getPaymentMode())
+                .items(null) // Items not fetched for list views
+                .createdOn(entity.getCreatedOn())
+                .updatedOn(entity.getUpdatedOn())
+                .build();
     }
 
     private Invoice convertToModel(InvoiceEntity entity) {
