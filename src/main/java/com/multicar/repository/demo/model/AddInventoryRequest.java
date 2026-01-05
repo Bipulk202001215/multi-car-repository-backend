@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 public class AddInventoryRequest {
     private String partCode;
     private Integer units; // MANDATORY
-    private BigDecimal unitsPrice; // MANDATORY
+    private BigDecimal unitsPrice;
+    private String supplierId; // MANDATORY
 }
 
 

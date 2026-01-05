@@ -58,6 +58,7 @@ public class PartcodeService {
                             .partCode(request.getPartCode())
                             .unitsPrice(request.getUnitsPrice())
                             .units(0)
+                            .supplierId(request.getSupplierId())
                             .minStockAlert(2) // Default value
                             .build();
                 });

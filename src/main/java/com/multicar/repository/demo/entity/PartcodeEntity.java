@@ -28,6 +28,10 @@ public class PartcodeEntity {
     
     @Column(name = "units", nullable = false)
     private Integer units;
+
+    @Id
+    @Column(name = "part_code",nullable = true)
+    private String supplierId;
     
     @Column(name = "min_stock_alert", columnDefinition = "INTEGER DEFAULT 2")
     private Integer minStockAlert;
