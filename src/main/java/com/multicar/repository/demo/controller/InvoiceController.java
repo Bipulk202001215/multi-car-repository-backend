@@ -34,6 +34,13 @@ public class InvoiceController {
         return ResponseEntity.ok(invoice);
     }
 
+    @GetMapping("/getFullInvoice/{invoiceId}")
+    public ResponseEntity<Invoice> getFullInvoiceById(@PathVariable String invoiceId) {
+        Invoice invoice = invoiceService.getFullInvoiceById(invoiceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with id: " + invoiceId, ErrorCode.INVOICE_NOT_FOUND));
+        return ResponseEntity.ok(invoice);
+    }
+
     @GetMapping
     public ResponseEntity<List<Invoice>> getAllInvoices() {
         List<Invoice> invoices = invoiceService.getAllInvoices();

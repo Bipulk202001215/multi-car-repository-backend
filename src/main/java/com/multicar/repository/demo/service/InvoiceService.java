@@ -94,6 +94,10 @@ public class InvoiceService {
         return invoiceRepository.findByInvoiceId(invoiceId)
                 .map(this::convertToModel);
     }
+    public Optional<Invoice> getFullInvoiceById(String invoiceId) {
+        return invoiceRepository.findByInvoiceId(invoiceId)
+                .map(this::convertToFullModel);
+    }
 
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll().stream()
@@ -222,6 +226,51 @@ public class InvoiceService {
         BigDecimal sgst = BigDecimal.valueOf(9);
         BigDecimal igst = BigDecimal.valueOf(9);
         
+        return Invoice.builder()
+                .invoiceId(entity.getInvoiceId())
+                .jobId(entity.getJobId())
+                .companyId(entity.getCompanyId())
+                .subtotal(entity.getSubtotal())
+                .cgst(cgst)
+                .sgst(sgst)
+                .igst(igst)
+                .total(entity.getTotal())
+                .paymentStatus(entity.getPaymentStatus())
+                .paymentMode(entity.getPaymentMode())
+                .items(items)
+                .createdOn(entity.getCreatedOn())
+                .updatedOn(entity.getUpdatedOn())
+                .build();
+    }
+    private Invoice convertToFullModel(InvoiceEntity entity) {
+        // Fetch SELL events for this jobId and convert to items
+        List<InvoiceItem> items = inventoryEventService.getEventsByJobId(entity.getJobId()).stream()
+                .filter(event -> event.getEvent() == InventoryEvent.SELL) // Only SELL events
+                .map(event -> {
+                    // Get unitsPrice from event (it's stored in the event)
+                    BigDecimal unitsPrice = event.getUnitsPrice();
+                    
+                    // Calculate totalPrice = unitsPrice * units
+                    BigDecimal totalPrice = unitsPrice.multiply(BigDecimal.valueOf(event.getUnits()));
+                    
+                    // Use partCode as partDescription (since there's no description field in PartcodeEntity)
+                    String partDescription = event.getPartCode();
+                    
+                    return InvoiceItem.builder()
+                            .partCode(event.getPartCode())
+                            .units(event.getUnits())
+                            .partDescription(partDescription)
+                            .unitsPrice(unitsPrice)
+                            .totalPrice(totalPrice)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        // Fixed values for GST
+        BigDecimal cgst = BigDecimal.valueOf(9);
+        BigDecimal sgst = BigDecimal.valueOf(9);
+        BigDecimal igst = BigDecimal.valueOf(9);
+
         return Invoice.builder()
                 .invoiceId(entity.getInvoiceId())
                 .jobId(entity.getJobId())
