@@ -299,3 +299,4 @@ curl -v -X POST http://localhost:8080/api/invoices \
 - The invoice ID is automatically linked to the job card
 - All inventory operations (SELL events) happen within a transaction, so if any item fails, the entire invoice creation is rolled back
 
+
