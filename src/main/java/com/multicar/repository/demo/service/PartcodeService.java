@@ -57,6 +57,8 @@ public class PartcodeService {
                     return PartcodeEntity.builder()
                             .partCode(request.getPartCode())
                             .unitsPrice(request.getUnitsPrice())
+                            .part_desc(request.getPartDesc())
+                            .part_company(request.getPartCompany())
                             .units(0)
                             .supplierId(request.getSupplierId())
                             .minStockAlert(2) // Default value

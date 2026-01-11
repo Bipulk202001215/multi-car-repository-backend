@@ -22,7 +22,13 @@ public class PartcodeEntity {
     @Id
     @Column(name = "part_code", length = 100, nullable = false)
     private String partCode;
-    
+
+    @Column(name = "part_desc", length = 100, nullable = true)
+    private String part_desc;
+
+    @Column(name = "part_company" , length = 50, nullable = true)
+    private String part_company;
+
     @Column(name = "units_price", precision = 19, scale = 2, nullable = false)
     private BigDecimal unitsPrice;
     

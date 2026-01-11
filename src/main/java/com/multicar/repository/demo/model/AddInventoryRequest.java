@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AddInventoryRequest {
     private String partCode;
+    private String partCompany;
+    private  String partDesc;
     private Integer units; // MANDATORY
     private BigDecimal unitsPrice;
     private String supplierId; // MANDATORY
