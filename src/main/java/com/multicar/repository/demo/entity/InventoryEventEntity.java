@@ -39,6 +39,9 @@ public class InventoryEventEntity {
     
     @Column(name = "price", precision = 19, scale = 2, nullable = false)
     private BigDecimal price;
+
+    @Column(name = "discount", precision = 19, scale = 2, nullable = true)
+    private BigDecimal discount;
     
     @Column(name = "units_price", precision = 19, scale = 2, nullable = false)
     private BigDecimal unitsPrice;

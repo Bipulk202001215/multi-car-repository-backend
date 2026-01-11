@@ -59,7 +59,7 @@ public class PartcodeService {
                             .unitsPrice(request.getUnitsPrice())
                             .part_desc(request.getPartDesc())
                             .part_company(request.getPartCompany())
-                            .units(0)
+                            .units(request.getUnits())
                             .supplierId(request.getSupplierId())
                             .minStockAlert(2) // Default value
                             .build();
@@ -131,6 +131,7 @@ public class PartcodeService {
                 .units(request.getUnits())
                 .unitsPrice(unitsPrice) // Maintain from partcode
                 .price(price)
+                .discount(request.getDiscount())
                 .companyId(request.getCompanyId())
                 .jobId(request.getJobId())
                 .build();

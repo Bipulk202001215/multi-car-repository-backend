@@ -19,6 +19,7 @@ public class InvoiceItem {
     private String partDescription;
     private BigDecimal unitsPrice;
     private BigDecimal totalPrice;
+    private BigDecimal discountedPrice;
 }
 
 

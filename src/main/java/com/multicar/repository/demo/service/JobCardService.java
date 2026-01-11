@@ -67,6 +67,12 @@ public class JobCardService {
                 .collect(Collectors.toList());
     }
 
+    public List<JobCard> getPendingJobs() {
+        return jobCardRepository.findByStatus(JobStatus.PENDING).stream()
+                .map(this::convertToModel)
+                .collect(Collectors.toList());
+    }
+
     public Optional<JobCard> updateJobCard(String jobCardId, CreateJobRequest request) {
         return jobCardRepository.findByJobCardId(jobCardId)
                 .map(existingEntity -> {

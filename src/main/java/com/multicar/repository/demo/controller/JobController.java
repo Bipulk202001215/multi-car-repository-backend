@@ -44,6 +44,12 @@ public class JobController {
         return ResponseEntity.ok(jobCards);
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<List<JobCard>> getPendingJobs() {
+        List<JobCard> pendingJobs = jobCardService.getPendingJobs();
+        return ResponseEntity.ok(pendingJobs);
+    }
+
     @PutMapping("/{jobCardId}")
     public ResponseEntity<JobCard> updateJobCard(
             @PathVariable String jobCardId,

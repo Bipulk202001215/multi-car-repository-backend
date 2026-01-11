@@ -51,6 +51,7 @@ public class InventoryEventService {
                 .companyId(entity.getCompanyId())
                 .jobId(entity.getJobId())
                 .createdOn(entity.getCreatedOn())
+                .discount(entity.getDiscount())
                 .build();
     }
 }

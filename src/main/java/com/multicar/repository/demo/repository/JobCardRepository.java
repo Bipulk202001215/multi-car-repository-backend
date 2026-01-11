@@ -1,6 +1,7 @@
 package com.multicar.repository.demo.repository;
 
 import com.multicar.repository.demo.entity.JobCardEntity;
+import com.multicar.repository.demo.enums.JobStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,8 @@ public interface JobCardRepository extends JpaRepository<JobCardEntity, String> 
     Optional<JobCardEntity> findByVehicleNumber(String vehicleNumber);
     
     List<JobCardEntity> findByCompanyId(String companyId);
+    
+    List<JobCardEntity> findByStatus(JobStatus status);
 }
 
 

@@ -3,6 +3,8 @@ package com.multicar.repository.demo.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,7 @@ import lombok.*;
 public class SellInventoryRequest {
     private String partCode; // MANDATORY
     private Integer units; // MANDATORY
+    private BigDecimal discount;
     private String companyId; // Required for SELL
     private String jobId; // Required for SELL
 }

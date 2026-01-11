@@ -24,6 +24,7 @@ public class InventoryEventModel {
     private BigDecimal unitsPrice;
     private String companyId;
     private String jobId;
+    private BigDecimal discount;
     private LocalDateTime createdOn;
 }
 

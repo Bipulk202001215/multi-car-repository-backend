@@ -255,21 +255,30 @@ public class InvoiceService {
                     
                     // Use partCode as partDescription (since there's no description field in PartcodeEntity)
                     String partDescription = event.getPartCode();
-                    
+
+                    BigDecimal discountPercentage= event.getDiscount() != null ? event.getDiscount() : BigDecimal.ZERO;
+
+                    BigDecimal discountAmount = totalPrice.subtract(totalPrice.multiply(discountPercentage).divide(BigDecimal.valueOf(100)));
+
                     return InvoiceItem.builder()
                             .partCode(event.getPartCode())
                             .units(event.getUnits())
                             .partDescription(partDescription)
                             .unitsPrice(unitsPrice)
                             .totalPrice(totalPrice)
+                            .discountedPrice(discountAmount)
                             .build();
                 })
                 .collect(Collectors.toList());
 
         // Fixed values for GST
-        BigDecimal cgst = BigDecimal.valueOf(9);
-        BigDecimal sgst = BigDecimal.valueOf(9);
-        BigDecimal igst = BigDecimal.valueOf(9);
+        BigDecimal totalDiscountedPrice = items.stream()
+                .map(InvoiceItem::getDiscountedPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal cgst = totalDiscountedPrice.add(totalDiscountedPrice.multiply(BigDecimal.valueOf(9)).divide(BigDecimal.valueOf(100)));
+        BigDecimal sgst = cgst;
+
 
         return Invoice.builder()
                 .invoiceId(entity.getInvoiceId())
@@ -278,11 +287,11 @@ public class InvoiceService {
                 .subtotal(entity.getSubtotal())
                 .cgst(cgst)
                 .sgst(sgst)
-                .igst(igst)
                 .total(entity.getTotal())
                 .paymentStatus(entity.getPaymentStatus())
                 .paymentMode(entity.getPaymentMode())
                 .items(items)
+                .netCalculationAmount(totalDiscountedPrice.add(cgst).add(sgst))
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
