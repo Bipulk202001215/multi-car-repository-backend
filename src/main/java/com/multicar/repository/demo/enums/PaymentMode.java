@@ -2,7 +2,8 @@ package com.multicar.repository.demo.enums;
 
 public enum PaymentMode {
     UPI("Unified Payments Interface"),
-    CASH("Cash payment");
+    CASH("Cash payment"),
+    MIXED("Mixed payment");
 
     private final String description;
 

@@ -2,7 +2,8 @@ package com.multicar.repository.demo.enums;
 
 public enum PaymentStatus {
     PENDING("Payment is pending"),
-    COMPLETED("Payment has been completed");
+    PARTIAL("Payment has been completed"),
+    PAID("Payment has paid");
 
     private final String description;
 

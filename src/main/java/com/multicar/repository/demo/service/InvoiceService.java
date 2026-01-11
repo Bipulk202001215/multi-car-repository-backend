@@ -254,7 +254,7 @@ public class InvoiceService {
                     BigDecimal totalPrice = unitsPrice.multiply(BigDecimal.valueOf(event.getUnits()));
                     
                     // Use partCode as partDescription (since there's no description field in PartcodeEntity)
-                    String partDescription = event.getPartCode();
+                    String partDescription = event.();
 
                     BigDecimal discountPercentage= event.getDiscount() != null ? event.getDiscount() : BigDecimal.ZERO;
 
@@ -266,17 +266,23 @@ public class InvoiceService {
                             .partDescription(partDescription)
                             .unitsPrice(unitsPrice)
                             .totalPrice(totalPrice)
+                            .discountPercentage(discountPercentage)
                             .discountedPrice(discountAmount)
                             .build();
                 })
                 .collect(Collectors.toList());
+
+        BigDecimal totalAmount = items.stream()
+                .map(InvoiceItem::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
 
         // Fixed values for GST
         BigDecimal totalDiscountedPrice = items.stream()
                 .map(InvoiceItem::getDiscountedPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal cgst = totalDiscountedPrice.add(totalDiscountedPrice.multiply(BigDecimal.valueOf(9)).divide(BigDecimal.valueOf(100)));
+        BigDecimal cgst = totalDiscountedPrice.multiply(BigDecimal.valueOf(9)).divide(BigDecimal.valueOf(100));
         BigDecimal sgst = cgst;
 
 
@@ -287,7 +293,7 @@ public class InvoiceService {
                 .subtotal(entity.getSubtotal())
                 .cgst(cgst)
                 .sgst(sgst)
-                .total(entity.getTotal())
+                .total(totalAmount)
                 .paymentStatus(entity.getPaymentStatus())
                 .paymentMode(entity.getPaymentMode())
                 .items(items)
