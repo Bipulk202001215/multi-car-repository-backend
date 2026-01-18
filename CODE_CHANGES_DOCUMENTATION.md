@@ -116,3 +116,61 @@ Response:
 - The field is stored as JSONB in PostgreSQL, providing efficient storage and querying capabilities
 - All invoice fetch endpoints (`getInvoiceById`, `getFullInvoiceById`, `getAllInvoices`) will include the `additionalDetails` field when present
 - The implementation follows the same pattern used for `JobDescription` in `JobDetailEntity`, ensuring consistency across the codebase
+
+---
+
+## Fix: Ensure PartcodeEntity is Saved When Created
+
+### Files Affected:
+1. `src/main/java/com/multicar/repository/demo/service/PartcodeService.java` (MODIFIED)
+
+### Modified Functions/Components:
+
+#### 1. PartcodeService.addUnits()
+- **Location**: `src/main/java/com/multicar/repository/demo/service/PartcodeService.java` (lines 53-67)
+- **Change**: Modified the `orElseGet()` lambda to explicitly save the newly created `PartcodeEntity` to the repository
+- **Before**: The new `PartcodeEntity` was built but not immediately saved (relied on later save operation)
+- **After**: The new `PartcodeEntity` is now saved immediately using `partcodeRepository.save(newPartcode)` within the `orElseGet()` block
+- **Impact**: 
+  - Ensures that when a Partcode doesn't exist, it's created and persisted to the database immediately
+  - Makes the code intent clearer and more explicit
+  - Prevents potential issues if the entity is used before the later save operation
+
+### Removed/Deprecated Code:
+- None
+
+### Example Usage or Impact:
+
+#### Before (Implicit Save):
+```java
+PartcodeEntity partcode = partcodeRepository.findByPartCode(request.getPartCode())
+    .orElseGet(() -> {
+        return PartcodeEntity.builder()
+            .partCode(request.getPartCode())
+            // ... other fields ...
+            .build();
+    });
+// Entity saved later at line 87
+partcodeRepository.save(partcode);
+```
+
+#### After (Explicit Save):
+```java
+PartcodeEntity partcode = partcodeRepository.findByPartCode(request.getPartCode())
+    .orElseGet(() -> {
+        PartcodeEntity newPartcode = PartcodeEntity.builder()
+            .partCode(request.getPartCode())
+            // ... other fields ...
+            .build();
+        // Save the new partcode to repository
+        return partcodeRepository.save(newPartcode);
+    });
+// Existing partcode updated later at line 87
+partcodeRepository.save(partcode);
+```
+
+### Notes:
+- The change ensures that new `PartcodeEntity` instances are persisted immediately when created
+- This is particularly important for ensuring data consistency and avoiding potential issues with transient entities
+- The existing save operation at line 87 will now update existing partcodes or handle any additional updates needed
+- No database schema changes required

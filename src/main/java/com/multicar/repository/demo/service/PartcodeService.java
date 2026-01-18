@@ -54,7 +54,7 @@ public class PartcodeService {
         PartcodeEntity partcode = partcodeRepository.findByPartCode(request.getPartCode())
                 .orElseGet(() -> {
                     // Create new partcode if it doesn't exist
-                    return PartcodeEntity.builder()
+                    PartcodeEntity newPartcode = PartcodeEntity.builder()
                             .partCode(request.getPartCode())
                             .unitsPrice(request.getUnitsPrice())
                             .part_desc(request.getPartDesc())
@@ -63,6 +63,8 @@ public class PartcodeService {
                             .supplierId(request.getSupplierId())
                             .minStockAlert(2) // Default value
                             .build();
+                    // Save the new partcode to repository
+                    return partcodeRepository.save(newPartcode);
                 });
         
         // Calculate price
