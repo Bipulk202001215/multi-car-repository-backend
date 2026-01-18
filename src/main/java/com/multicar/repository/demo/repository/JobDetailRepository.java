@@ -19,3 +19,4 @@ public interface JobDetailRepository extends JpaRepository<JobDetailEntity, Stri
 
 
 
+
