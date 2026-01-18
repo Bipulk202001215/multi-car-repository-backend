@@ -1,13 +1,17 @@
 package com.multicar.repository.demo.entity;
 
+import com.multicar.repository.demo.converter.AdditionalInvoiceDetailsConverter;
 import com.multicar.repository.demo.enums.PaymentMode;
 import com.multicar.repository.demo.enums.PaymentStatus;
 import com.multicar.repository.demo.generator.InvoiceIdGenerator;
+import com.multicar.repository.demo.model.AdditionalInvoiceDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -48,6 +52,11 @@ public class InvoiceEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_mode")
     private PaymentMode paymentMode;
+    
+    @Convert(converter = AdditionalInvoiceDetailsConverter.class)
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "additional_details", columnDefinition = "jsonb", nullable = true)
+    private AdditionalInvoiceDetails additionalDetails;
     
     @CreationTimestamp
     @Column(name = "created_on", updatable = false)

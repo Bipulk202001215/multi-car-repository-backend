@@ -76,6 +76,7 @@ public class InvoiceService {
                 .total(total)
                 .paymentStatus(request.getPaymentStatus() != null ? request.getPaymentStatus() : PaymentStatus.PENDING)
                 .paymentMode(request.getPaymentMode())
+                .additionalDetails(request.getAdditionalDetails())
                 .build();
 
         InvoiceEntity savedEntity = invoiceRepository.save(entity);
@@ -143,6 +144,9 @@ public class InvoiceService {
                     if (request.getPaymentMode() != null) {
                         existingEntity.setPaymentMode(request.getPaymentMode());
                     }
+                    if (request.getAdditionalDetails() != null) {
+                        existingEntity.setAdditionalDetails(request.getAdditionalDetails());
+                    }
                     
                     InvoiceEntity updatedEntity = invoiceRepository.save(existingEntity);
                     return convertToModel(updatedEntity);
@@ -206,6 +210,7 @@ public class InvoiceService {
                 .paymentStatus(entity.getPaymentStatus())
                 .paymentMode(entity.getPaymentMode())
                 .items(null) // Items not fetched for list views
+                .additionalDetails(entity.getAdditionalDetails())
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
@@ -238,6 +243,7 @@ public class InvoiceService {
                 .paymentStatus(entity.getPaymentStatus())
                 .paymentMode(entity.getPaymentMode())
                 .items(items)
+                .additionalDetails(entity.getAdditionalDetails())
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
@@ -254,7 +260,7 @@ public class InvoiceService {
                     BigDecimal totalPrice = unitsPrice.multiply(BigDecimal.valueOf(event.getUnits()));
                     
                     // Use partCode as partDescription (since there's no description field in PartcodeEntity)
-                    String partDescription = event.();
+                    String partDescription = event.getPartCode();
 
                     BigDecimal discountPercentage= event.getDiscount() != null ? event.getDiscount() : BigDecimal.ZERO;
 
@@ -298,6 +304,7 @@ public class InvoiceService {
                 .paymentMode(entity.getPaymentMode())
                 .items(items)
                 .netCalculationAmount(totalDiscountedPrice.add(cgst).add(sgst))
+                .additionalDetails(entity.getAdditionalDetails())
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();

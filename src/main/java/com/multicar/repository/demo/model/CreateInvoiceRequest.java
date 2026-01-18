@@ -5,7 +5,6 @@ import com.multicar.repository.demo.enums.PaymentMode;
 import com.multicar.repository.demo.enums.PaymentStatus;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Builder(toBuilder = true)
@@ -21,7 +20,8 @@ public class CreateInvoiceRequest {
     private String companyId;
     private PaymentStatus paymentStatus; // Optional, defaults to PENDING
     private PaymentMode paymentMode;
-    private List<InvoiceItem> items; // List of partCode and units for SELL events
+    private List<InvoiceItem> items;// List of partCode and units for SELL events
+    private AdditionalInvoiceDetails additionalDetails; // Optional
 }
 
 

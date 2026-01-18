@@ -30,6 +30,7 @@ public class Invoice {
     private PaymentMode paymentMode;
     private BigDecimal netCalculationAmount;
     private List<InvoiceItem> items; // Items (partCode and units) from SELL events
+    private AdditionalInvoiceDetails additionalDetails; // Optional additional invoice details
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }
