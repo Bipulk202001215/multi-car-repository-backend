@@ -17,6 +17,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateJobRequest {
     private String vehicleNumber;
+    private String vehicleModel;
     private String mobileNumber;
     private Integer kmReading;
     private LocalDateTime jobDate;

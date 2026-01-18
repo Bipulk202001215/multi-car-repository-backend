@@ -43,6 +43,7 @@ public class JobCardService {
                 .mobileNumber(request.getMobileNumber())
                 .estimatedDelivery(request.getEstimatedDelivery())
                 .companyId(request.getCompanyId())
+                .vehicleModel(request.getVehicleModel())
                 .invoiceId(null) // invoice_id is not part of request, set to null initially
                 .build();
         
@@ -130,6 +131,7 @@ public class JobCardService {
                 .invoiceId(entity.getInvoiceId())
                 .createdOn(entity.getCreatedOn())
                 .mobileNumber(entity.getMobileNumber())
+                .vehicleModel(entity.getVehicleModel())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
     }

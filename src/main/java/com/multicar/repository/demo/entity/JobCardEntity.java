@@ -52,7 +52,10 @@ public class JobCardEntity {
     
     @Column(name = "estimated_delivery")
     private LocalDateTime estimatedDelivery;
-    
+
+    @Column(name = "vehicle_model", nullable = false)
+    private String vehicleModel;
+
     @Column(name = "invoice_id", nullable = true)
     private String invoiceId;
 

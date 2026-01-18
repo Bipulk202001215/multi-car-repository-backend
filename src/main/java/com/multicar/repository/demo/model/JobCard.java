@@ -18,6 +18,7 @@ public class JobCard {
     private String jobCardId;
     private JobDetail jobDetailId;
     private String vehicleNumber;
+    private String vehicleModel;
     private Integer kmReading;
     private LocalDateTime jobDate;
     private JobStatus status;
