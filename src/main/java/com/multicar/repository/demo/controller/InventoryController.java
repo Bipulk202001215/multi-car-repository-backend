@@ -24,7 +24,7 @@ public class InventoryController {
     private final InventoryEventService inventoryEventService;
 
     // Add units to inventory
-    @PostMapping("/add")
+    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<InventoryEventModel> addUnits(@RequestBody AddInventoryRequest request) {
         InventoryEventModel event = partcodeService.addUnits(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(event);
