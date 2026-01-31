@@ -63,7 +63,7 @@ public class JobCardService {
     }
 
     public List<JobCard> getJobCardsByCompanyId(String companyId) {
-        return jobCardRepository.findByCompanyId(companyId).stream()
+        return jobCardRepository.findByCompanyIdAndStatusNot(companyId, JobStatus.COMPLETED).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
@@ -76,6 +76,12 @@ public class JobCardService {
 
     public List<JobCard> getCompletedJobs() {
         return jobCardRepository.findByStatus(JobStatus.COMPLETED).stream()
+                .map(this::convertToModel)
+                .collect(Collectors.toList());
+    }
+
+    public List<JobCard> getCompletedJobsByCompanyId(String companyId) {
+        return jobCardRepository.findByCompanyIdAndStatus(companyId, JobStatus.COMPLETED).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }

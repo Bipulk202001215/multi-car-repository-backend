@@ -44,6 +44,12 @@ public class JobController {
         return ResponseEntity.ok(jobCards);
     }
 
+    @GetMapping("/company/{companyId}/completed")
+    public ResponseEntity<List<JobCard>> getCompletedJobsByCompanyId(@PathVariable String companyId) {
+        List<JobCard> completedJobs = jobCardService.getCompletedJobsByCompanyId(companyId);
+        return ResponseEntity.ok(completedJobs);
+    }
+
     @GetMapping("/pending")
     public ResponseEntity<List<JobCard>> getPendingJobs() {
         List<JobCard> pendingJobs = jobCardService.getPendingJobs();
