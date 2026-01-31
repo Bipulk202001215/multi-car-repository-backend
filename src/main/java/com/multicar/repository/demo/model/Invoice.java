@@ -31,6 +31,8 @@ public class Invoice {
     private BigDecimal netCalculationAmount;
     private List<InvoiceItem> items; // Items (partCode and units) from SELL events
     private AdditionalInvoiceDetails additionalDetails; // Optional additional invoice details
+    private String vehicleNumber; // Customer vehicle number from job card
+    private String mobileNumber; // Customer mobile number from job card
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }

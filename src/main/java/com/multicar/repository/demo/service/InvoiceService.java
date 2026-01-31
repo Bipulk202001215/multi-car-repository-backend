@@ -291,6 +291,14 @@ public class InvoiceService {
         BigDecimal cgst = totalDiscountedPrice.multiply(BigDecimal.valueOf(9)).divide(BigDecimal.valueOf(100));
         BigDecimal sgst = cgst;
 
+        // Fetch job card to get vehicle number and mobile number
+        String vehicleNumber = null;
+        String mobileNumber = null;
+        Optional<JobCardEntity> jobCard = jobCardRepository.findByJobCardId(entity.getJobId());
+        if (jobCard.isPresent()) {
+            vehicleNumber = jobCard.get().getVehicleNumber();
+            mobileNumber = jobCard.get().getMobileNumber();
+        }
 
         return Invoice.builder()
                 .invoiceId(entity.getInvoiceId())
@@ -305,6 +313,8 @@ public class InvoiceService {
                 .items(items)
                 .netCalculationAmount(totalDiscountedPrice.add(cgst).add(sgst))
                 .additionalDetails(entity.getAdditionalDetails())
+                .vehicleNumber(vehicleNumber)
+                .mobileNumber(mobileNumber)
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();
