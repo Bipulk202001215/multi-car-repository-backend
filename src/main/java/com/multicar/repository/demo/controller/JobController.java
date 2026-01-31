@@ -50,6 +50,12 @@ public class JobController {
         return ResponseEntity.ok(pendingJobs);
     }
 
+    @GetMapping("/completed")
+    public ResponseEntity<List<JobCard>> getCompletedJobs() {
+        List<JobCard> completedJobs = jobCardService.getCompletedJobs();
+        return ResponseEntity.ok(completedJobs);
+    }
+
     @PutMapping("/{jobCardId}")
     public ResponseEntity<JobCard> updateJobCard(
             @PathVariable String jobCardId,
@@ -57,6 +63,13 @@ public class JobController {
         JobCard updatedJobCard = jobCardService.updateJobCard(jobCardId, request)
                 .orElseThrow(() -> new ResourceNotFoundException("Job card not found with id: " + jobCardId, ErrorCode.JOB_NOT_FOUND));
         return ResponseEntity.ok(updatedJobCard);
+    }
+
+    @GetMapping("/{jobCardId}/complete")
+    public ResponseEntity<JobCard> completeJob(@PathVariable String jobCardId) {
+        JobCard completedJob = jobCardService.completeJob(jobCardId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job card not found with id: " + jobCardId, ErrorCode.JOB_NOT_FOUND));
+        return ResponseEntity.ok(completedJob);
     }
 
     @DeleteMapping("/{jobCardId}")

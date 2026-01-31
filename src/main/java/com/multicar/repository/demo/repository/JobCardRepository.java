@@ -18,6 +18,8 @@ public interface JobCardRepository extends JpaRepository<JobCardEntity, String> 
     List<JobCardEntity> findByCompanyId(String companyId);
     
     List<JobCardEntity> findByStatus(JobStatus status);
+    
+    List<JobCardEntity> findByStatusNot(JobStatus status);
 }
 
 

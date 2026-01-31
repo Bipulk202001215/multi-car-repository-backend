@@ -57,7 +57,7 @@ public class JobCardService {
     }
 
     public List<JobCard> getAllJobCards() {
-        return jobCardRepository.findAll().stream()
+        return jobCardRepository.findByStatusNot(JobStatus.COMPLETED).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
@@ -70,6 +70,12 @@ public class JobCardService {
 
     public List<JobCard> getPendingJobs() {
         return jobCardRepository.findByStatus(JobStatus.PENDING).stream()
+                .map(this::convertToModel)
+                .collect(Collectors.toList());
+    }
+
+    public List<JobCard> getCompletedJobs() {
+        return jobCardRepository.findByStatus(JobStatus.COMPLETED).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
@@ -104,6 +110,15 @@ public class JobCardService {
                         }
                     }
                     
+                    JobCardEntity updatedEntity = jobCardRepository.save(existingEntity);
+                    return convertToModel(updatedEntity);
+                });
+    }
+
+    public Optional<JobCard> completeJob(String jobCardId) {
+        return jobCardRepository.findByJobCardId(jobCardId)
+                .map(existingEntity -> {
+                    existingEntity.setStatus(JobStatus.COMPLETED);
                     JobCardEntity updatedEntity = jobCardRepository.save(existingEntity);
                     return convertToModel(updatedEntity);
                 });

@@ -4,7 +4,8 @@ public enum JobStatus {
     PENDING("Job is pending and not yet started"),
     IN_PROGRESS("Job is currently in progress"),
     QC("Job is in quality check phase"),
-    READY("Job is completed and ready for delivery");
+    READY("Job is completed and ready for delivery"),
+    COMPLETED("Job is completed");
 
     private final String description;
 
