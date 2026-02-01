@@ -100,8 +100,8 @@ public class InvoiceService {
                 .map(this::convertToFullModel);
     }
 
-    public List<Invoice> getAllInvoices() {
-        return invoiceRepository.findAll().stream()
+    public List<Invoice> getAllInvoices(String companyId) {
+        return invoiceRepository.findByCompanyId(companyId).stream()
                 .map(this::convertToModelWithoutItems)
                 .collect(Collectors.toList());
     }
