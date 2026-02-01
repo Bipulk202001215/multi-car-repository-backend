@@ -50,9 +50,9 @@ public class JobController {
         return ResponseEntity.ok(completedJobs);
     }
 
-    @GetMapping("/pending")
-    public ResponseEntity<List<JobCard>> getPendingJobs() {
-        List<JobCard> pendingJobs = jobCardService.getPendingJobs();
+    @GetMapping("/pending/{companyId}/company")
+    public ResponseEntity<List<JobCard>> getPendingJobs(@PathVariable String companyId) {
+        List<JobCard> pendingJobs = jobCardService.getPendingJobs(companyId);
         return ResponseEntity.ok(pendingJobs);
     }
 

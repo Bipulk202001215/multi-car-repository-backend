@@ -68,8 +68,8 @@ public class JobCardService {
                 .collect(Collectors.toList());
     }
 
-    public List<JobCard> getPendingJobs() {
-        return jobCardRepository.findByStatus(JobStatus.PENDING).stream()
+    public List<JobCard> getPendingJobs(String companyId) {
+        return jobCardRepository.findByCompanyIdAndStatus(companyId, JobStatus.PENDING).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
