@@ -13,8 +13,15 @@ public interface PartcodeRepository extends JpaRepository<PartcodeEntity, String
     
     Optional<PartcodeEntity> findByPartCode(String partCode);
     
+    Optional<PartcodeEntity> findByPartCodeAndCompanyId(String partCode, String companyId);
+    
+    List<PartcodeEntity> findByCompanyId(String companyId);
+    
     @Query("SELECT p FROM PartcodeEntity p WHERE p.units <= p.minStockAlert")
     List<PartcodeEntity> findLowStockItems();
+    
+    @Query("SELECT p FROM PartcodeEntity p WHERE p.units <= p.minStockAlert AND p.companyId = :companyId")
+    List<PartcodeEntity> findLowStockItemsByCompanyId(String companyId);
 }
 
 

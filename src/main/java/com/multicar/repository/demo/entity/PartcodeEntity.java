@@ -38,6 +38,9 @@ public class PartcodeEntity {
     @Column(name = "supplier_id", length = 50, nullable = true)
     private String supplierId;
     
+    @Column(name = "company_id", length = 50, nullable = true)
+    private String companyId;
+    
     @Column(name = "min_stock_alert", columnDefinition = "INTEGER DEFAULT 2")
     private Integer minStockAlert;
     

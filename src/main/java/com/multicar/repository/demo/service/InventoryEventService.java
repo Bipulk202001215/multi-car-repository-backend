@@ -22,8 +22,8 @@ public class InventoryEventService {
         return convertToModel(savedEntity);
     }
 
-    public List<InventoryEventModel> getEventsByPartCode(String partCode) {
-        return inventoryEventRepository.findByPartCode(partCode).stream()
+    public List<InventoryEventModel> getEventsByPartCode(String companyId, String partCode) {
+        return inventoryEventRepository.findByPartCodeAndCompanyId(partCode, companyId).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
@@ -34,8 +34,8 @@ public class InventoryEventService {
                 .collect(Collectors.toList());
     }
 
-    public List<InventoryEventModel> getAllEvents() {
-        return inventoryEventRepository.findAll().stream()
+    public List<InventoryEventModel> getAllEvents(String companyId) {
+        return inventoryEventRepository.findByCompanyId(companyId).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }

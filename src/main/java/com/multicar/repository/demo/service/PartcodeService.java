@@ -29,7 +29,7 @@ public class PartcodeService {
     private final PartcodeRepository partcodeRepository;
     private final InventoryEventRepository inventoryEventRepository;
 
-    public InventoryEventModel addUnits(AddInventoryRequest request) {
+    public InventoryEventModel addUnits(String companyId, AddInventoryRequest request) {
         // Validation: units is mandatory
         if (request.getUnits() == null) {
             throw new BusinessException("Units field is required", ErrorCode.UNITS_REQUIRED);
@@ -51,7 +51,7 @@ public class PartcodeService {
         }
         
         // Find or create PartcodeEntity
-        PartcodeEntity partcode = partcodeRepository.findByPartCode(request.getPartCode())
+        PartcodeEntity partcode = partcodeRepository.findByPartCodeAndCompanyId(request.getPartCode(), companyId)
                 .orElseGet(() -> {
                     // Create new partcode if it doesn't exist
                     PartcodeEntity newPartcode = PartcodeEntity.builder()
@@ -61,6 +61,7 @@ public class PartcodeService {
                             .part_company(request.getPartCompany())
                             .units(request.getUnits())
                             .supplierId(request.getSupplierId())
+                            .companyId(companyId)
                             .minStockAlert(2) // Default value
                             .build();
                     // Save the new partcode to repository
@@ -77,7 +78,7 @@ public class PartcodeService {
                 .units(request.getUnits())
                 .unitsPrice(request.getUnitsPrice())
                 .price(price)
-                .companyId(null) // Optional for ADD
+                .companyId(companyId)
                 .jobId(null) // Optional for ADD
                 .build();
         
@@ -91,7 +92,7 @@ public class PartcodeService {
         return convertEventToModel(savedEvent);
     }
 
-    public InventoryEventModel sellUnits(SellInventoryRequest request) {
+    public InventoryEventModel sellUnits(String companyId, SellInventoryRequest request) {
         // Validation: units is mandatory
         if (request.getUnits() == null) {
             throw new BusinessException("Units field is required", ErrorCode.UNITS_REQUIRED);
@@ -108,9 +109,9 @@ public class PartcodeService {
         }
         
         // Find PartcodeEntity
-        PartcodeEntity partcode = partcodeRepository.findByPartCode(request.getPartCode())
+        PartcodeEntity partcode = partcodeRepository.findByPartCodeAndCompanyId(request.getPartCode(), companyId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Partcode not found with part code: " + request.getPartCode(), 
+                        "Partcode not found with part code: " + request.getPartCode() + " for company: " + companyId, 
                         ErrorCode.PARTCODE_NOT_FOUND));
         
         // Validation: sufficient stock
@@ -134,7 +135,7 @@ public class PartcodeService {
                 .unitsPrice(unitsPrice) // Maintain from partcode
                 .price(price)
                 .discount(request.getDiscount())
-                .companyId(request.getCompanyId())
+                .companyId(companyId)
                 .jobId(request.getJobId())
                 .build();
         
@@ -147,19 +148,19 @@ public class PartcodeService {
         return convertEventToModel(savedEvent);
     }
 
-    public Optional<Partcode> getPartcodeByPartCode(String partCode) {
-        return partcodeRepository.findByPartCode(partCode)
+    public Optional<Partcode> getPartcodeByPartCode(String companyId, String partCode) {
+        return partcodeRepository.findByPartCodeAndCompanyId(partCode, companyId)
                 .map(this::convertToModel);
     }
 
-    public List<Partcode> getAllPartcodes() {
-        return partcodeRepository.findAll().stream()
+    public List<Partcode> getAllPartcodes(String companyId) {
+        return partcodeRepository.findByCompanyId(companyId).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
 
-    public List<Partcode> getLowStockAlerts() {
-        return partcodeRepository.findLowStockItems().stream()
+    public List<Partcode> getLowStockAlerts(String companyId) {
+        return partcodeRepository.findLowStockItemsByCompanyId(companyId).stream()
                 .map(this::convertToModel)
                 .collect(Collectors.toList());
     }
@@ -170,6 +171,7 @@ public class PartcodeService {
                 .unitsPrice(entity.getUnitsPrice())
                 .units(entity.getUnits())
                 .minStockAlert(entity.getMinStockAlert())
+                .companyId(entity.getCompanyId())
                 .createdOn(entity.getCreatedOn())
                 .updatedOn(entity.getUpdatedOn())
                 .build();

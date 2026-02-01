@@ -24,23 +24,23 @@ public class InventoryController {
     private final InventoryEventService inventoryEventService;
 
     // Add units to inventory
-    @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<InventoryEventModel> addUnits(@RequestBody AddInventoryRequest request) {
-        InventoryEventModel event = partcodeService.addUnits(request);
+    @PostMapping(value = "/{companyId}/add", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<InventoryEventModel> addUnits(@PathVariable String companyId, @RequestBody AddInventoryRequest request) {
+        InventoryEventModel event = partcodeService.addUnits(companyId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(event);
     }
 
     // Sell units from inventory
-    @PostMapping("/sell")
-    public ResponseEntity<InventoryEventModel> sellUnits(@RequestBody SellInventoryRequest request) {
-        InventoryEventModel event = partcodeService.sellUnits(request);
+    @PostMapping("/{companyId}/sell")
+    public ResponseEntity<InventoryEventModel> sellUnits(@PathVariable String companyId, @RequestBody SellInventoryRequest request) {
+        InventoryEventModel event = partcodeService.sellUnits(companyId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(event);
     }
 
     // Get partcode by part code
-    @GetMapping("/partcode/{partCode}")
-    public ResponseEntity<Partcode> getPartcodeByPartCode(@PathVariable String partCode) {
-        Partcode partcode = partcodeService.getPartcodeByPartCode(partCode)
+    @GetMapping("/{companyId}/partcode/{partCode}")
+    public ResponseEntity<Partcode> getPartcodeByPartCode(@PathVariable String companyId, @PathVariable String partCode) {
+        Partcode partcode = partcodeService.getPartcodeByPartCode(companyId, partCode)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Partcode not found with part code: " + partCode, 
                         ErrorCode.PARTCODE_NOT_FOUND));
@@ -48,30 +48,30 @@ public class InventoryController {
     }
 
     // Get all partcodes
-    @GetMapping("/partcode")
-    public ResponseEntity<List<Partcode>> getAllPartcodes() {
-        List<Partcode> partcodes = partcodeService.getAllPartcodes();
+    @GetMapping("/{companyId}/partcode")
+    public ResponseEntity<List<Partcode>> getAllPartcodes(@PathVariable String companyId) {
+        List<Partcode> partcodes = partcodeService.getAllPartcodes(companyId);
         return ResponseEntity.ok(partcodes);
     }
 
     // Get all events
-    @GetMapping("/events")
-    public ResponseEntity<List<InventoryEventModel>> getAllEvents() {
-        List<InventoryEventModel> events = inventoryEventService.getAllEvents();
+    @GetMapping("/{companyId}/events")
+    public ResponseEntity<List<InventoryEventModel>> getAllEvents(@PathVariable String companyId) {
+        List<InventoryEventModel> events = inventoryEventService.getAllEvents(companyId);
         return ResponseEntity.ok(events);
     }
 
     // Get events by part code
-    @GetMapping("/events/{partCode}")
-    public ResponseEntity<List<InventoryEventModel>> getEventsByPartCode(@PathVariable String partCode) {
-        List<InventoryEventModel> events = inventoryEventService.getEventsByPartCode(partCode);
+    @GetMapping("/{companyId}/events/{partCode}")
+    public ResponseEntity<List<InventoryEventModel>> getEventsByPartCode(@PathVariable String companyId, @PathVariable String partCode) {
+        List<InventoryEventModel> events = inventoryEventService.getEventsByPartCode(companyId, partCode);
         return ResponseEntity.ok(events);
     }
 
     // Get low stock alerts
-    @GetMapping("/alerts")
-    public ResponseEntity<List<Partcode>> getStockAlerts() {
-        List<Partcode> alerts = partcodeService.getLowStockAlerts();
+    @GetMapping("/{companyId}/alerts")
+    public ResponseEntity<List<Partcode>> getStockAlerts(@PathVariable String companyId) {
+        List<Partcode> alerts = partcodeService.getLowStockAlerts(companyId);
         return ResponseEntity.ok(alerts);
     }
 }

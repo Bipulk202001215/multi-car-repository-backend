@@ -20,6 +20,7 @@ public class AddInventoryRequest {
     private Integer units; // MANDATORY
     private BigDecimal unitsPrice;
     private String supplierId; // MANDATORY
+    private String companyId;
 }
 
 

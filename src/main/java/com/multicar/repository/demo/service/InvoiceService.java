@@ -45,7 +45,7 @@ public class InvoiceService {
                         .build();
                 
                 // Create SELL event (this will also update partcode units)
-                partcodeService.sellUnits(sellRequest);
+                partcodeService.sellUnits(request.getCompanyId(), sellRequest);
             }
         }
         
@@ -53,7 +53,7 @@ public class InvoiceService {
         BigDecimal subtotal = BigDecimal.ZERO;
         if (request.getItems() != null && !request.getItems().isEmpty()) {
             for (InvoiceItem item : request.getItems()) {
-                Partcode partcode = partcodeService.getPartcodeByPartCode(item.getPartCode())
+                Partcode partcode = partcodeService.getPartcodeByPartCode(request.getCompanyId(), item.getPartCode())
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Partcode not found with part code: " + item.getPartCode(),
                                 ErrorCode.PARTCODE_NOT_FOUND));
@@ -118,7 +118,7 @@ public class InvoiceService {
                     BigDecimal subtotal = BigDecimal.ZERO;
                     if (request.getItems() != null && !request.getItems().isEmpty()) {
                         for (InvoiceItem item : request.getItems()) {
-                            Partcode partcode = partcodeService.getPartcodeByPartCode(item.getPartCode())
+                            Partcode partcode = partcodeService.getPartcodeByPartCode(request.getCompanyId(), item.getPartCode())
                                     .orElseThrow(() -> new ResourceNotFoundException(
                                             "Partcode not found with part code: " + item.getPartCode(),
                                             ErrorCode.PARTCODE_NOT_FOUND));

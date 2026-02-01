@@ -19,6 +19,7 @@ public class Partcode {
     private BigDecimal unitsPrice;
     private Integer units;
     private Integer minStockAlert;
+    private String companyId;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
 }

@@ -11,6 +11,8 @@ public interface InventoryEventRepository extends JpaRepository<InventoryEventEn
     
     List<InventoryEventEntity> findByPartCode(String partCode);
     
+    List<InventoryEventEntity> findByPartCodeAndCompanyId(String partCode, String companyId);
+    
     List<InventoryEventEntity> findByJobId(String jobId);
     
     List<InventoryEventEntity> findByCompanyId(String companyId);
